@@ -18,7 +18,7 @@ const App = () => {
       <Header />
       <Navbar />
       <div className='app-content'>
-        <Route exact path='/login' render={() => <Login /> }/>
+        <Route path='/login' render={() => <Login /> }/>
         <Route exact path='/' render={() => <Main /> }/>
         <Route path='/tasks' render={() => <Tasks /> }/>
         <Route path='/management' render={() => <TaskManager /> }/>
