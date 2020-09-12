@@ -1,12 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Tasks.scss';
+import TasksTable from './TasksTable/TasksTable';
+import TasksDescription from './TasksDescription/TasksDescription';
+import { useSelector } from 'react-redux';
+import { getTasks } from '../Tasks/TasksReducer';
+import { useDispatch } from 'react-redux';
 
-const Tasks = (props) => {
-  return (
-    <div className='tasks'>
-      TASKS
-    </div>
-  )
+
+const Tasks = () => {
+
+  const [isShowDescription, setShowDescription] = useState(false);
+  const [showId, setShowId] = useState('');
+
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    dispatch(getTasks());
+  },[getTasks]);
+
+  const { tasks } = useSelector((state) => state.tasksReducer);
+
+  if (!isShowDescription && tasks) {
+
+    return <TasksTable tasks={tasks} setShowDescription={setShowDescription} setShowId={setShowId} />
+    
+  } else if (isShowDescription && tasks) {
+
+    return <TasksDescription tasks={tasks} showId={showId} setShowDescription={setShowDescription} />
+
+  } else {
+    return <div>TASKS</div>;
+  }
 }
 
 export default Tasks;

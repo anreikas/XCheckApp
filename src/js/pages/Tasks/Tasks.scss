@@ -1,0 +1,38 @@
+.tasks__table {
+  margin: 0 auto;
+  margin-top: 20px;
+  width: 80%;
+  border-collapse: collapse;
+}
+
+.tasks__table-caption {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.tasks__table__header th {
+  padding: 0.5em;
+  text-align: left;
+  border-bottom: 2px solid black;
+}
+
+.task-description {
+  padding: 0 20px;
+}
+
+.task-description-header {
+  text-align: center;
+}
+
+.task-description-bth {
+  display: block;
+  margin: 0 auto;
+}
+
+.tasks-control {
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
