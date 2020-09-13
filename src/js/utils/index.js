@@ -47,6 +47,7 @@ export const reviewRequests = {
     const data = await response.data;
     return data;
   },
+<<<<<<< HEAD
   async postReview(review) {
     const response = await instance.post('reviews', review);
     const data = await response.data;
@@ -128,3 +129,6 @@ export const TextSorter = (a, b) => {
   if (nameA > nameB) return 1;
   return 0; // Никакой сортировки
 };
+=======
+}
+>>>>>>> feat: review table draft

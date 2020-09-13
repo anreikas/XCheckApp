@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 import {
   ADD_REVIEW, DELETE_REVIEW, FILTER, SET_STATE,
 } from './types';
+=======
+import { ADD_REVIEW, DELETE_REVIEW } from './types';
+>>>>>>> feat: review table draft
 
 // const initialState = [];
 // const REVIEW_TEMPLATE = {
@@ -13,6 +17,7 @@ import {
 
 const generateId = () => `review-${Date.now()}`;
 
+<<<<<<< HEAD
 export const addReview = (data) => ({
   type: ADD_REVIEW,
   data: {
@@ -41,4 +46,17 @@ export const deleteReview = (review) => ({
 export const filter = (review) => ({
   type: FILTER,
   data: review,
+=======
+export const addReview = (review) => ({
+  type: ADD_REVIEW,
+  review: {
+    id: generateId(),
+    ...review,
+  },
+});
+
+export const deleteReview = (review) => ({
+  type: DELETE_REVIEW,
+  review,
+>>>>>>> feat: review table draft
 });
