@@ -1,29 +1,23 @@
 import React from 'react';
 import './FormItemTask.scss';
 
-<<<<<<< HEAD
-const FormItemTask = ({category, title, minscore, maxscore, description, nTask, setNtask, el, item}) => {
+const FormItemTask = ({
+  title, minscore, maxscore, description, nTask, setNtask, id,
+}) => {
+  console.log(maxscore);
   return (
     <ul>
-      <h4>{category}</h4>
-=======
-const FormItemTask = ({ title, minscore, maxscore, description, nTask, setNtask, id}) => {
-  console.log(maxscore)
-  return (
-    <ul>
->>>>>>> 672e8c55492ac18c04f9bc265fde009971d90ed3
       <li>
         <label>
           <div>title:</div>
           <input type="text"
                  value={title}
-<<<<<<< HEAD
-                 onChange={(e)=>setNtask({...nTask, items: nTask.items.map((elem,i)=> i === item
-=======
-                 onChange={(e)=>setNtask({...nTask, items: nTask.items.map((elem,i)=> elem.id === id
->>>>>>> 672e8c55492ac18c04f9bc265fde009971d90ed3
-                                                           ?{...elem, title: e.target.value}
-                                                           : {...elem})})}/>
+                 onChange={(e) => setNtask({
+                   ...nTask,
+                   items: nTask.items.map((elem) => (elem.id === id
+                     ? { ...elem, title: e.target.value }
+                     : { ...elem })),
+                 })}/>
         </label>
       </li>
       <li>
@@ -31,15 +25,12 @@ const FormItemTask = ({ title, minscore, maxscore, description, nTask, setNtask,
           <div>minScore:</div>
           <input type="number"
                  value={minscore}
-<<<<<<< HEAD
-                 onChange={(e)=>setNtask({...nTask, items: nTask.items.map((elem,i)=> i === item
-                                                            ?{...elem, minScore: +e.target.value}
-                                                            : {...elem})})} />
-=======
-                 onChange={ (e)=>setNtask({ ...nTask, items: nTask.items.map((elem,i)=> elem.id === id
-                                                            ?{...elem, minScore: +e.target.value}
-                                                            : {...elem}) }) } />
->>>>>>> 672e8c55492ac18c04f9bc265fde009971d90ed3
+                 onChange={ (e) => setNtask({
+                   ...nTask,
+                   items: nTask.items.map((elem) => (elem.id === id
+                     ? { ...elem, minScore: +e.target.value }
+                     : { ...elem })),
+                 }) } />
         </label>
       </li>
       <li>
@@ -47,13 +38,12 @@ const FormItemTask = ({ title, minscore, maxscore, description, nTask, setNtask,
           <div>maxScore:</div>
           <input type="number"
                  value={maxscore}
-<<<<<<< HEAD
-                 onChange={(e)=>setNtask({...nTask, items: nTask.items.map((elem,i)=> i === item
-=======
-                 onChange={(e)=>setNtask({...nTask, items: nTask.items.map((elem,i)=> elem.id === id
->>>>>>> 672e8c55492ac18c04f9bc265fde009971d90ed3
-                                                           ?{...elem, maxScore: +e.target.value}
-                                                           : {...elem})})} />
+                 onChange={(e) => setNtask({
+                   ...nTask,
+                   items: nTask.items.map((elem) => (elem.id === id
+                     ? { ...elem, maxScore: +e.target.value }
+                     : { ...elem })),
+                 })} />
         </label>
       </li>
       <li>
@@ -61,17 +51,16 @@ const FormItemTask = ({ title, minscore, maxscore, description, nTask, setNtask,
           <div>description:</div>
           <textarea type="text"
                     value={description}
-<<<<<<< HEAD
-                    onChange={(e)=>setNtask({...nTask, items: nTask.items.map((elem,i)=> i === item
-=======
-                    onChange={(e)=>setNtask({...nTask, items: nTask.items.map((elem,i)=> elem.id === id
->>>>>>> 672e8c55492ac18c04f9bc265fde009971d90ed3
-                                                              ?{...elem, description: e.target.value}
-                                                              : {...elem})})} />
+                    onChange={(e) => setNtask({
+                      ...nTask,
+                      items: nTask.items.map((elem) => (elem.id === id
+                        ? { ...elem, description: e.target.value }
+                        : { ...elem })),
+                    })} />
         </label>
       </li>
     </ul>
-  )
-}
+  );
+};
 
 export default FormItemTask;
