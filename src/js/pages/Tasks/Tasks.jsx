@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './Tasks.scss';
 import TasksTable from './TasksTable/TasksTable';
 import TasksDescription from './TasksDescription/TasksDescription';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getTasks } from '../Tasks/TasksReducer';
-import { useDispatch } from 'react-redux';
 
 
 const Tasks = () => {
