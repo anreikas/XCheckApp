@@ -1,19 +1,19 @@
-import Axios from "axios";
+import Axios from 'axios';
 
 const instance = Axios.create({
   baseURL: 'https://x-check.herokuapp.com/',
   headers: {
-    'Accept': 'application/json',
+    Accept: 'application/json',
     'Content-Type': 'application/json',
-  }
-})
+  },
+});
 
 export const tasksAPI = {
   async getTasks() {
-    const response = await instance.get(`tasks`);
+    const response = await instance.get('tasks');
     return response.data;
-  }
-}
+  },
+};
 
 export const usersAPI = {
   async getUser(id) {
@@ -22,11 +22,11 @@ export const usersAPI = {
     return data;
   },
   async setUser(id, githubId, roles) {
-    const response = await instance.post(`users`, {id, githubId, roles});
+    const response = await instance.post('users', { id, githubId, roles });
     return response.data;
   },
   async updateUser(id, githubId, roles) {
-    const response = await instance.put(`users/${id}`, {id, githubId, roles});
+    const response = await instance.put(`users/${id}`, { id, githubId, roles });
     return response.data;
   },
 }
@@ -47,7 +47,4 @@ export const reviewRequests = {
     const data = await response.data;
     return data;
   },
-  
-
 }
-
