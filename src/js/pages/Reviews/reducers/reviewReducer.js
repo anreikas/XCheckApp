@@ -53,7 +53,7 @@ const initialState = [
 export default (state = initialState, action) => {
   const { review } = action;
 
-  console.log( '@ : action ', action );
+  console.log('@ : action ', action);
   switch (action.type) {
     case ADD_REVIEW:
       state.push(review);

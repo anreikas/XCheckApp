@@ -71,6 +71,7 @@ const Reviews = () => {
 /* eslint-disable no-unused-vars,no-irregular-whitespace */
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch, useStore } from 'react-redux';
+
 // import {lighten, makeStyles} from '@material-ui/core/styles';
 
 // import {
@@ -134,8 +135,34 @@ const Columns = [
 
   },
 ];
+const setUsers = (data) => ({ type: ADD_REVIEW, data })
+
+const fetchUsers = () => async (dispatch) => {
+  const response = await fetch("http://x-check.herokuapp.com/reviews");
+  console.log(response);
+  if (response.ok) {
+    const data = await response.json();
+
+    dispatch(setUsers(data));
+  }
+}
+
 
 const Reviews = () => {
+
+
+
+
+
+
+
+  // const fetchReviews = useCallback(async () => {
+  //   const response = await fetch("http://x-check.herokuapp.com/reviews");
+  //   if (response.ok) {
+  //     const result = await response.json(); console.log(result) //готовый массив обьектов для запроса//
+  //   }
+
+  // })
   const dataSource = useSelector((item) => item.reviewReducer);
   const dispatch = useDispatch();
 
@@ -145,8 +172,8 @@ const Reviews = () => {
     dispatch(deleteReview(review));
   }, [dataSource]);
 
-  console.log('@Reviews : dcdispatch ', dispatch);
-
+  console.log('@Reviews : dispatch ', dispatch);
+  useEffect(() => { dispatch(fetchUsers()) }, []);
   useEffect(() => {
     const operation = columns.find(({ title }) => title === 'operation');
 
@@ -163,7 +190,7 @@ const Reviews = () => {
 
   return (
     <>
-      <Table dataSource={dataSource} columns={columns}/>;
+      <Table dataSource={dataSource} columns={columns} />;
     </>
   );
 };
