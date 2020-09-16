@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars,no-irregular-whitespace */
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch, useStore } from 'react-redux';
+import { ADD_REVIEW } from './actions/types';
 
 // import {lighten, makeStyles} from '@material-ui/core/styles';
 
@@ -75,16 +76,10 @@ const fetchUsers = () => async (dispatch) => {
 
     dispatch(setUsers(data));
   }
-}
+};
 
 
 const Reviews = () => {
-
-
-
-
-
-
 
   // const fetchReviews = useCallback(async () => {
   //   const response = await fetch("http://x-check.herokuapp.com/reviews");
