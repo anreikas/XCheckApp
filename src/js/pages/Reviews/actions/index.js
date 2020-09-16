@@ -60,4 +60,3 @@ export const deleteReview = (review) => ({
   review,
 >>>>>>> feat: review table draft
 });
-
