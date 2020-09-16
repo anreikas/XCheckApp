@@ -34,7 +34,16 @@ import './Reviews.scss';
 import './styles.scss';
 import { addReview, deleteReview } from './actions';
 
+// const review = {
+//   id: "rev-id-1",
+//   requestId: "rev-req-1",
+//   author: "ButterBrot777", reviewer
+//   state: "DISPUTED", // enum [DRAFT, PUBLISHED, DISPUTED, ACCEPTED, REJECTED],
+//   grade: { /* embedded `taskScore` object */ }
+// };
+
 const Columns = [
+  // taskName author score
   {
     title: 'name',
     dataIndex: 'name',
@@ -66,7 +75,7 @@ const Reviews = () => {
     dispatch(deleteReview(review));
   }, [dataSource]);
 
-  console.log('@Reviews : dispatch ', dispatch);
+  console.log('@Reviews : dcdispatch ', dispatch);
 
   useEffect(() => {
     const operation = columns.find(({ title }) => title === 'operation');
