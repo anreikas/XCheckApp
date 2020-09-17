@@ -18,15 +18,14 @@ const initialState = [
   },
 ];
 export default (state = initialState, action) => {
-  const { review } = action;
+  const { data } = action;
 
   console.log('@ : action ', action);
   switch (action.type) {
     case ADD_REVIEW:
-      state.push(review);
-      return state;
+      return [...state, ...action.data];
     case DELETE_REVIEW:
-      return state.filter((el) => el.key !== review.key);
+      return state.filter((el) => el.key !== data.key);
     default:
       return state;
   }

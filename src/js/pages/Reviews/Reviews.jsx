@@ -9,7 +9,7 @@ import { ADD_REVIEW } from './actions/types';
 //   Table,
 //   TableBody,
 //   TableCell,
-//   TableContainer,
+//   TableContainer
 //   TableHead,
 //   TablePagination,
 //   TableRow,
@@ -36,50 +36,68 @@ import './Reviews.scss';
 import './styles.scss';
 import { addReview, deleteReview } from './actions';
 
-// const review = {
-//   id: "rev-id-1",
-//   requestId: "rev-req-1",
-//   author: "ButterBrot777", reviewer
-//   state: "DISPUTED", // enum [DRAFT, PUBLISHED, DISPUTED, ACCEPTED, REJECTED],
-//   grade: { /* embedded `taskScore` object */ }
-// };
+// author: "ButterBrot777"
+// grade: {}
+// id: "rev-id-1"
+// key: "rev-id-1"
+// requestId: "rev-req-1"
+// state: "DISPUTED"
 
 const Columns = [
-  // taskName author score
   {
-    title: 'name',
-    dataIndex: 'name',
+    title: 'Task-Name',
+    dataIndex: 'id',
     width: '30%',
     editable: true,
   },
   {
-    title: 'age',
-    dataIndex: 'age',
+    title: 'Author',
+    dataIndex: 'author',
   },
   {
-    title: 'address',
-    dataIndex: 'address',
+    title: 'Score',
+    dataIndex: 'grade',
   },
   {
-    title: 'operation',
-    dataIndex: 'operation',
+    title: 'State',
+    dataIndex: 'state',
+
+  },
+  {
+    title: 'Reviewer',
+    width: '30%',
+    dataIndex: 'reviewer',
 
   },
 ];
-const setUsers = (data) => ({ type: ADD_REVIEW, data })
 
+// {
+//   "id": "rev-id-4",
+//   "requestId": "rev-req-2",
+//   "author": "rgovin",
+//   "state": "DISPUTED",
+//   "grade": {}
+// }
+
+const setUsers = (data) => ({ type: ADD_REVIEW, data })
 const fetchUsers = () => async (dispatch) => {
   const response = await fetch("http://x-check.herokuapp.com/reviews");
   console.log(response);
   if (response.ok) {
     const data = await response.json();
 
-    dispatch(setUsers(data));
+    dispatch(setUsers(data.map((el) => (el.key = el.id, el))));
   }
-};
+}
 
 
 const Reviews = () => {
+
+
+
+
+
+
 
   // const fetchReviews = useCallback(async () => {
   //   const response = await fetch("http://x-check.herokuapp.com/reviews");
@@ -100,7 +118,7 @@ const Reviews = () => {
   console.log('@Reviews : dispatch ', dispatch);
   useEffect(() => { dispatch(fetchUsers()) }, []);
   useEffect(() => {
-    const operation = columns.find(({ title }) => title === 'operation');
+    const operation = columns.find(({ title }) => title === 'grade');
 
     if (operation) {
       operation.render = (text, record, index) => (
@@ -113,11 +131,14 @@ const Reviews = () => {
     }
   }, [columns]);
 
+  console.log('>', dataSource)
+
   return (
     <>
       <Table dataSource={dataSource} columns={columns} />;
     </>
   );
+
 };
 // const Reviews = (props) => (
 //   <div className="review__table">
