@@ -48,6 +48,17 @@ const { Search } = Input;
 // requestId: "rev-req-1"
 // state: "DISPUTED"
 
+const textSorter = (a, b) => {
+  const nameA = a.author.toLowerCase();
+  const nameB = b.author.toLowerCase();
+
+  if (nameA < nameB) {
+    return -1;
+  }
+  if (nameA > nameB) return 1;
+  return 0; // Никакой сортировки
+};
+
 const Columns = [
   {
     title: 'Task-Name',
@@ -55,40 +66,13 @@ const Columns = [
     width: '30%',
     editable: true,
     searched: true,
+    sorter: textSorter,
   },
   {
     title: 'Author',
     dataIndex: 'author',
-    // sorter: true,
-    // sorter: (a, b) => {
-    //   console.log(a);
-    //   return a.author - b.author;
-    // },
-    filters: [
-      {
-        text: 'London',
-        value: 'London',
-      },
-      {
-        text: 'New York',
-        value: 'New York',
-      },
-    ],
     searched: true,
-    onFilter: (value, record) => {
-      console.log('onFilter', value, record);
-      return value;
-    },
-    sorter: (a, b) => {
-      const nameA = a.author.toLowerCase();
-      const nameB = b.author.toLowerCase();
-
-      if (nameA < nameB) {
-        return -1;
-      }
-      if (nameA > nameB) return 1;
-      return 0; // Никакой сортировки
-    },
+    sorter: textSorter,
   },
   {
     title: 'Score',
@@ -98,66 +82,15 @@ const Columns = [
   {
     title: 'State',
     dataIndex: 'state',
-
+    sorter: textSorter,
   },
   {
     title: 'Reviewer',
     width: '30%',
     dataIndex: 'reviewer',
-
+    sorter: textSorter,
   },
 ];
-const data = [
-  {
-    id: 'rev-id-1',
-    requestId: 'rev-req-1',
-    author: 'ButterBrot777',
-    state: 'DISPUTED',
-    score: 2,
-    grade: {},
-  },
-  {
-    id: 'rev-id-2',
-    requestId: 'rev-req-2',
-    author: 'rsschool1',
-    state: 'DISPUTED',
-    score: 4,
-    grade: {},
-  },
-  {
-    id: 'rev-id-3',
-    requestId: 'rev-req-3',
-    author: 'rsschool-3',
-    state: 'DISPUTED',
-    score: 1,
-    grade: {},
-  },
-  {
-    id: 'rev-id-4',
-    requestId: 'rev-req-4',
-    author: 'rsschool-4',
-    state: 'DISPUTED',
-    score: 3,
-    grade: {},
-  },
-  {
-    id: 'rev-id-5',
-    requestId: 'rev-req-5',
-    author: 'rsschool-5',
-    state: 'DISPUTED',
-    score: 5,
-    grade: {},
-  },
-];
-
-// {
-//   "id": "rev-id-4",
-//   "requestId": "rev-req-2",
-//   "author": "rgovin",
-//   "state": "DISPUTED",
-//   "grade": {}
-// }
-
 const setUsers = (data) => ({ type: ADD_REVIEW, data });
 const fetchUsers = () => async (dispatch) => {
   const response = await fetch('http://x-check.herokuapp.com/reviews');
@@ -173,40 +106,34 @@ const Reviews = () => {
   // const fetchReviews = useCallback(async () => {
   //   const response = await fetch("http://x-check.herokuapp.com/reviews");
   //   if (response.ok) {
-  //     const result = await response.json(); console.log(result) //готовый массив обьектов для запроса//
+  //     const result = await response.json(); console.log(result) // готовый массив обьектов для запроса//
   //   }
   // })
-  const [searchState, setSearchState] = useState({
-    text: '',
-    column: '',
-  });
+
   const dataSource = useSelector((item) => item.reviewReducer);
   const dispatch = useDispatch();
   const searchInput = useRef(null);
+  const searchState = useRef({
+    text: '',
+    column: '',
+  });
   const [columns, setColumns] = useState(Columns);
   const handleReset = useCallback((clearFilters) => {
     clearFilters();
 
-    setSearchState({
+    searchState.current = {
       ...searchState,
       text: '',
-    });
-    // this.setState({ searchText: '' });
+    };
   });
 
   const handleSearch = useCallback((selectedKeys, confirm, dataIndex) => {
-    confirm();
-    console.log('@ : ', selectedKeys, confirm, dataIndex);
-    // dispatch(filter())
-    setSearchState({
+    searchState.current = {
       text: selectedKeys[0],
       column: dataIndex,
-    });
-    // this.setState({
-    //   searchText: selectedKeys[0],
-    //   searchedColumn: dataIndex,
-    // });
-  }, [dataSource]);
+    };
+    confirm();
+  });
 
   const getColumnSearchProps = useCallback(
     (dataIndex) => ({
@@ -251,19 +178,17 @@ const Reviews = () => {
           setTimeout(() => searchInput.current.select(), 100);
         }
       },
-      //   text: selectedKeys[0],
-      //   column: dataIndex,
-      // });searchState
-      render: (text) => {
-          console.log('render', searchState.column, dataIndex);
-        return (searchState.column === dataIndex
+      render: (handleText) => {
+        const { current: { column, text } } = searchState;
+
+        return (column === dataIndex
           ? (<Highlighter
-            highlightStyle={{backgroundColor : '#ffc069', padding : 0}}
-            searchWords={[]} // [this.state.searchText]
+            highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+            searchWords={[text]} // [this.state.searchText]
             autoEscape
-            textToHighlight={text ? text.toString() : ''}
+            textToHighlight={handleText ? handleText.toString() : ''}
           />)
-          : text);
+          : handleText);
       },
     }),
     [searchState],
@@ -294,10 +219,7 @@ const Reviews = () => {
 
   return (
     <>
-      <Table dataSource={data.map((el, i) => {
-        el.key = i;
-        return el;
-      })} columns={columns}/>;
+      <Table dataSource={dataSource} columns={columns}/>;
     </>
   );
 };

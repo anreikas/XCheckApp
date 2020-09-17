@@ -32,11 +32,9 @@ export default (state = initialState, action) => {
       return [...state];
     case DELETE_REVIEW:
       return state.filter((el) => el.key !== data.key);
-=======
-import { ADD_REVIEW, DELETE_REVIEW } from '../actions/types';
-=======
+
 import { ADD_REVIEW, DELETE_REVIEW, FILTER } from '../actions/types';
->>>>>>> feat: sort & filter
+
 
 const initialState = [
   // {
