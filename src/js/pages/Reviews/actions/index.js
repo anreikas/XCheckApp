@@ -1,4 +1,4 @@
-import { ADD_REVIEW, DELETE_REVIEW } from './types';
+import { ADD_REVIEW, DELETE_REVIEW, FILTER } from './types';
 
 // const initialState = [];
 // const REVIEW_TEMPLATE = {
@@ -21,5 +21,10 @@ export const addReview = (review) => ({
 
 export const deleteReview = (review) => ({
   type: DELETE_REVIEW,
+  data: review,
+});
+
+export const filter = (review) => ({
+  type: FILTER,
   data: review,
 });
