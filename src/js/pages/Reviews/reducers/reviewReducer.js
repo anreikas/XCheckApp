@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { ADD_REVIEW, DELETE_REVIEW, FILTER, SET_STATE} from '../actions/types';
 
 const initialState = [
@@ -33,22 +34,25 @@ export default (state = initialState, action) => {
       return state.filter((el) => el.key !== data.key);
 =======
 import { ADD_REVIEW, DELETE_REVIEW } from '../actions/types';
+=======
+import { ADD_REVIEW, DELETE_REVIEW, FILTER } from '../actions/types';
+>>>>>>> feat: sort & filter
 
 const initialState = [
-  {
-    key: '1',
-    name: 'Mike',
-    age: 32,
-    address: '10 Downing Street',
-    tags: ['cool', 'teacher'],
-  },
-  {
-    key: '2',
-    name: 'John',
-    age: 42,
-    address: '10 Downing Street',
-    tags: ['loser'],
-  },
+  // {
+  //   key: '1',
+  //   name: 'Mike',
+  //   age: 32,
+  //   address: '10 Downing Street',
+  //   tags: ['cool', 'teacher'],
+  // },
+  // {
+  //   key: '2',
+  //   name: 'John',
+  //   age: 42,
+  //   address: '10 Downing Street',
+  //   tags: ['loser'],
+  // },
 ];
 export default (state = initialState, action) => {
   const { data } = action;
@@ -57,6 +61,8 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_REVIEW:
       return [...state, ...action.data];
+    case FILTER:
+      return [...state];
     case DELETE_REVIEW:
       return state.filter((el) => el.key !== data.key);
     default:
