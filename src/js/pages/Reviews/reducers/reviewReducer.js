@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { ADD_REVIEW, DELETE_REVIEW, FILTER } from '../actions/types';
+import { ADD_REVIEW, DELETE_REVIEW, FILTER, SET_STATE} from '../actions/types';
 
 const initialState = [
   // {
@@ -22,8 +22,10 @@ export default (state = initialState, action) => {
 
   console.log('@ : action ', action);
   switch (action.type) {
+    case SET_STATE:
+      return data;
     case ADD_REVIEW:
-      return [...state, ...action.data];
+      return [...state, action.data];
     case FILTER:
       return [...state];
     case DELETE_REVIEW:
