@@ -4,7 +4,7 @@ import './TableHead.scss';
 
 const TableHead = ({tasks, setDataTable}) => {
 
-  const [sortFlag, setSortFlag] = useState(false);
+  const [sortFlag, setSortFlag] = useState('');
 
   const sortTask = (value) => {
     let newArr = JSON.parse(JSON.stringify(tasks));
@@ -46,16 +46,21 @@ const TableHead = ({tasks, setDataTable}) => {
     }
   }
 
+  const handleReset = () => {
+    setSortFlag('');
+    setDataTable(tasks);
+  }
+
   return (
     <tr>
-      <th className='tasks__table__header-item'>task
-        <PopupWindow searchFlag={isSearchTask} setSearchFlag={setIsSearchTask} sortName={sortTask} />
+      <th className='tasks__table__header-item'>Task-Name
+        <PopupWindow searchFlag={isSearchTask} setSearchFlag={setIsSearchTask} sortName={sortTask} placehold='Search task-name' />
         <span className='tasks__table__header-loupe' onClick={handleSearchTask}>
         &#9906;
         </span>
       </th>
-      <th className='tasks__table__header-item'>author
-        <PopupWindow searchFlag={isSearchAuthor} setSearchFlag={setIsSearchAuthor} sortName={sortAuthor} />
+      <th className='tasks__table__header-item'>Author
+        <PopupWindow searchFlag={isSearchAuthor} setSearchFlag={setIsSearchAuthor} sortName={sortAuthor} placehold='Search author' />
         <span className='tasks__table__header-loupe' onClick={handleSearchAuthor}>
         &#9906;
         </span>
@@ -68,13 +73,13 @@ const TableHead = ({tasks, setDataTable}) => {
           setSortFlag(true);
           setDataTable(sortScoreDown(tasks));
         }
-      }}  className='tasks__table__header-item'>max score 
+      }}  className='tasks__table__header-item'>Max score 
         <div className='table__header-item__wrap'>
-          <span>&#8743;</span><br/><span>&#8744;</span>
+          <span>&#9650;</span><br/><span>&#9660;</span>
         </div>
       </th>
       <th className='tasks__table__header-item'>
-        <button className='tasks__table__header-bth' onClick={()=> setDataTable(tasks)}>RESET</button>
+        <button className='tasks__table__header-bth' onClick={handleReset}>RESET</button>
       </th>
     </tr>
   )

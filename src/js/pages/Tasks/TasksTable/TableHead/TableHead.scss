@@ -1,6 +1,7 @@
 .tasks__table__header {
   &-item {
     position: relative;
+    font-weight: normal;
     .table__header-item__wrap {
       position: absolute;
       display: inline-block;
@@ -15,7 +16,8 @@
   
       & > * {
         line-height: 1;
-        font-size: .8rem;
+        font-size: .7rem;
+        color: #bfbfbf;
       }
     }
   }

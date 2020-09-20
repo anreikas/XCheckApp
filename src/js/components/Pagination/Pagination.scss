@@ -13,15 +13,16 @@
   border-radius: 5px;
   margin: 5px;
   display: flex;
-  justify-content: center;align-items: center;
+  justify-content: center;
+  align-items: center;
 }
 .page-link:hover {
-  color: #0000ff;
-  border-color:  #0000ff;
+  color: #3ea3ff;
+  border-color:  #3ea3ff;
 }
 .page-link-active {
-  color: #0000ff;
-  border-color:  #0000ff;
+  color: #3ea3ff;
+  border-color:  #3ea3ff;
 }
 .page-item {
   line-height: 1;
