@@ -1,4 +1,6 @@
-import { ADD_REVIEW, DELETE_REVIEW, FILTER } from './types';
+import {
+  ADD_REVIEW, DELETE_REVIEW, FILTER, SET_STATE,
+} from './types';
 
 // const initialState = [];
 // const REVIEW_TEMPLATE = {
@@ -11,7 +13,10 @@ import { ADD_REVIEW, DELETE_REVIEW, FILTER } from './types';
 
 const generateId = () => `review-${Date.now()}`;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> feat: loading
 export const addReview = (data) => ({
   type: ADD_REVIEW,
   data: {

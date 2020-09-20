@@ -37,6 +37,7 @@ export const reviewRequests = {
     const data = await response.data;
     return data;
   },
+
   async getTask(id) {
     const response = await instance.get(`tasks/${id}`);
     const data = await response.data;
@@ -117,6 +118,7 @@ export const FetchReq = async (url, method = 'GET', data) => {
 
   return result;
 };
+
 
 export const TextSorter = (a, b) => {
   const nameA = a.author.toLowerCase();
