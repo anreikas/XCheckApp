@@ -38,13 +38,64 @@ export const reviewRequests = {
     return data;
   },
   async getTask() {
-    const response = await instance.get(`tasks`);
+    const response = await instance.get('tasks');
     const data = await response.data;
     return data;
   },
   async postRequest(obj) {
-    const response = await instance.post(`reviewRequests`, obj);
+    const response = await instance.post('reviewRequests', obj);
     const data = await response.data;
     return data;
   },
-}
+};
+
+/* eslint-disable indent */
+/* eslint-disable spaced-comment */
+/* eslint-disable no-unreachable */
+
+const URL_DATA_SEPARATOR = '&';
+
+export const UrlConstructor = (url, params, options = {}) => {
+  const { separator = URL_DATA_SEPARATOR, equalSign = '=' } = options;
+
+  return `${url}?${
+    Object.entries(params)
+      .map((el) => el.join(equalSign))
+      .join(separator)
+    }`;
+};
+
+export const UrlPath = (...args) => args.join('/');
+
+export const FetchReq = async (url, method = 'GET', data) => {
+  const req = {
+    method,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  };
+
+  if (data) {
+    req.body = data;
+  }
+
+  const response = await fetch(url, req).catch();
+
+  if (!response.ok) {
+    const error = Object.assign(Error.prototype, {
+      response,
+    });
+
+    throw error;
+  }
+
+  const {headers} = response;
+  // X-Total-Count
+  console.log( '@FetchReq : ', headers );
+
+  const result = await response.json();
+
+  return result;
+};
+

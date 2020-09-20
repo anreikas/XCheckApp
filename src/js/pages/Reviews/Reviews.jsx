@@ -3,50 +3,21 @@ import React, {
   useState, useEffect, useCallback, useRef,
 } from 'react';
 import { useSelector, useDispatch, useStore } from 'react-redux';
-import { ADD_REVIEW } from './actions/types';
 import Highlighter from 'react-highlight-words';
+import { SET_STATE } from './actions/types';
 
-// import {lighten, makeStyles} from '@material-ui/core/styles';
-
-// import {
-//   Table,
-//   TableBody,
-//   TableCell,
-//   TableContainer
-//   TableHead,
-//   TablePagination,
-//   TableRow,
-//   TableSortLabel,
-//   Toolbar,
-//   Typography,
-//   Paper,
-//   Checkbox,
-//   IconButton,
-//   Tooltip,
-//   FormControlLabel,
-//   Switch,
-//   DeleteIcon,
-//   FilterListIcon,
-// } from '@material-ui/core';
-
+import { FetchReq, UrlPath, UrlConstructor } from '../../utils';
+import { SERVER_URL } from '../../constants';
 import 'antd/dist/antd.css';
-// import './index.css';
-
 import {
-  Table, Tag, Space, Input, Button, Popconfirm, Form,
+  Table, Tag, Space, Input, Button, Popconfirm, Form, Switch,
 } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import './Reviews.scss';
 import './styles.scss';
-import { addReview, deleteReview, filter } from './actions';
+import { addReview, setState, filter } from './actions';
 
-const { Search } = Input;
-// author: "ButterBrot777"
-// grade: {}
-// id: "rev-id-1"
-// key: "rev-id-1"
-// requestId: "rev-req-1"
-// state: "DISPUTED"
+// TODO relations tables
 
 const textSorter = (a, b) => {
   const nameA = a.author.toLowerCase();
@@ -58,7 +29,8 @@ const textSorter = (a, b) => {
   if (nameA > nameB) return 1;
   return 0; // Никакой сортировки
 };
-
+const MAX_ROWS = 5;
+const START_PAGE = 1;
 const Columns = [
   {
     title: 'Task-Name',
@@ -91,25 +63,22 @@ const Columns = [
     sorter: textSorter,
   },
 ];
-const setUsers = (data) => ({ type: ADD_REVIEW, data });
-const fetchUsers = () => async (dispatch) => {
-  const response = await fetch('http://x-check.herokuapp.com/reviews');
-  console.log(response);
-  if (response.ok) {
-    const data = await response.json();
 
-    dispatch(setUsers(data.map((el) => (el.key = el.id, el))));
+const getReviews = ({ cb, pageNumber = START_PAGE, rowsLimit = MAX_ROWS }) => async (dispatch) => {
+  console.log('@ : getReviews >', pageNumber);
+  const reviewsUrl = UrlPath(SERVER_URL, 'reviews');
+  // _page=7&_limit=20
+  const url = UrlConstructor(reviewsUrl, { _page: pageNumber, _limit: rowsLimit });
+
+  const data = await FetchReq(url);
+  dispatch(setState(data));
+
+  if (typeof cb === 'function') {
+    cb();
   }
 };
 
 const Reviews = () => {
-  // const fetchReviews = useCallback(async () => {
-  //   const response = await fetch("http://x-check.herokuapp.com/reviews");
-  //   if (response.ok) {
-  //     const result = await response.json(); console.log(result) // готовый массив обьектов для запроса//
-  //   }
-  // })
-
   const dataSource = useSelector((item) => item.reviewReducer);
   const dispatch = useDispatch();
   const searchInput = useRef(null);
@@ -118,6 +87,8 @@ const Reviews = () => {
     column: '',
   });
   const [columns, setColumns] = useState(Columns);
+  const [loading, setLoading] = useState(true);
+  const [pageNumber, setPageNumber] = useState(1);
   const handleReset = useCallback((clearFilters) => {
     clearFilters();
 
@@ -126,7 +97,6 @@ const Reviews = () => {
       text: '',
     };
   });
-
   const handleSearch = useCallback((selectedKeys, confirm, dataIndex) => {
     searchState.current = {
       text: selectedKeys[0],
@@ -194,10 +164,9 @@ const Reviews = () => {
     [searchState],
   );
 
-  console.log('@Reviews : dispatch ', dispatch);
-  useEffect(() => {
-    dispatch(fetchUsers());
-  }, []);
+  const handleLoading = useCallback(() => {
+    setLoading(!loading);
+  }, [loading]);
 
   useEffect(() => {
     const columnsWithProps = columns.map((column) => {
@@ -212,14 +181,38 @@ const Reviews = () => {
       return column;
     });
 
+    setLoading(true);
+
     setColumns(columnsWithProps);
   }, []);
 
-  console.log('>', dataSource);
+  useEffect(() => {
+    console.log(pageNumber);
+    setLoading(true);
+    dispatch(getReviews({
+      pageNumber,
+      cb: () => {
+        setTimeout(setLoading.bind(false), 200);
+      },
+    }));
+  }, [pageNumber]);
 
   return (
     <>
-      <Table dataSource={dataSource} columns={columns}/>;
+      <Form.Item label="loading">
+        <Switch checked={loading} onChange={handleLoading} />
+      </Form.Item>
+      <Table
+        dataSource={dataSource}
+        columns={columns}
+        loading={loading}
+        pagination={{
+          total: 50,
+          current: pageNumber,
+          pageSize: MAX_ROWS,
+          onChange: setPageNumber,
+        }}
+      />;
     </>
   );
 };

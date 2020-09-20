@@ -1,4 +1,6 @@
-import { ADD_REVIEW, DELETE_REVIEW, FILTER } from './types';
+import {
+  ADD_REVIEW, DELETE_REVIEW, FILTER, SET_STATE,
+} from './types';
 
 // const initialState = [];
 // const REVIEW_TEMPLATE = {
@@ -11,13 +13,25 @@ import { ADD_REVIEW, DELETE_REVIEW, FILTER } from './types';
 
 const generateId = () => `review-${Date.now()}`;
 
-export const addReview = (review) => ({
+export const addReview = (data) => ({
   type: ADD_REVIEW,
-  review: {
+  data: {
     id: generateId(),
-    ...review,
+    ...data,
   },
 });
+
+export const setState = (inData) => {
+  const data = (Array.isArray(inData) ? inData : [inData]).map((el) => ({
+    key: el.id,
+    ...el,
+  }));
+
+  return {
+    type: SET_STATE,
+    data,
+  };
+};
 
 export const deleteReview = (review) => ({
   type: DELETE_REVIEW,
