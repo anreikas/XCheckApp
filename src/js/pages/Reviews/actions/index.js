@@ -13,10 +13,6 @@ import {
 
 const generateId = () => `review-${Date.now()}`;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> feat: loading
 export const addReview = (data) => ({
   type: ADD_REVIEW,
   data: {
