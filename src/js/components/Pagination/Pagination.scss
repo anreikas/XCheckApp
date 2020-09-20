@@ -10,16 +10,18 @@
   height: 10px;
   cursor: pointer;
   border: 1px solid #000;
-  border-radius: 50%;
+  border-radius: 5px;
   margin: 5px;
   display: flex;
   justify-content: center;align-items: center;
 }
 .page-link:hover {
-  background-color: #b1acac;
+  color: #0000ff;
+  border-color:  #0000ff;
 }
 .page-link-active {
-  background-color: #b1acac;
+  color: #0000ff;
+  border-color:  #0000ff;
 }
 .page-item {
   line-height: 1;

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import './Tasks.scss';
 import TasksTable from './TasksTable/TasksTable';
 import TasksDescription from './TasksDescription/TasksDescription';
 import { useSelector, useDispatch } from 'react-redux';

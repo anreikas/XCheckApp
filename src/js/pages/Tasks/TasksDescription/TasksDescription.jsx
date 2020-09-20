@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../Tasks.scss';
+import './TasksDescription.scss';
 import ElementsDescription from './ElementsDescription/ElementsDescription';
 
 const TasksDescription = ({tasks, showId, setShowDescription}) => {

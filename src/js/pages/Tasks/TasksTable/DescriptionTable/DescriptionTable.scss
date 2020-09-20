@@ -1,8 +1,16 @@
-tbody td {
-  padding: 0.5em;
-  border-bottom: 1px solid #ccc;
-}
+.table-description {
+  &:hover {
+    background-color: #eee;
+  }
 
-tbody tr:hover {
-  background-color: #eee;
+  &-elem {
+    padding: 0.5em;
+    border-bottom: 1px solid #ccc;
+  }
+
+  &-bth {
+    width: 80px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 }

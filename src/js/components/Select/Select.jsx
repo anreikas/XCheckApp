@@ -1,11 +1,15 @@
 import React from 'react';
+import './Select.scss';
 
-const Select = ({onChangeSelect, arr}) => {
+const Select = ({setPerPage, arr}) => {
+  const onChangeSelect = (e) => {
+    setPerPage(e.target.value);
+  }
   const options = arr.map(el => <option key={`${el}`} value={`${el}`}>{el}</option>);
   return (
-    <div>
+    <div className='wrapper-select'>
       <span>output: </span>
-      <select onChange={onChangeSelect}>
+      <select className='select' onChange={onChangeSelect}>
         {options}
       </select>
     </div>

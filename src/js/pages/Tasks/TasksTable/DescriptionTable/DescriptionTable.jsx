@@ -9,12 +9,12 @@ const DescriptionTable = ({id, author, maxScore, setShowDescription, setShowId})
   }
 
     return (
-    <tr>
-      <td>{id}</td>
-      <td>{author}</td>
-      <td>{maxScore}</td>
-      <td>
-        <button onClick={onShow}>SHOW</button>
+    <tr className='table-description'>
+      <td className='table-description-elem'>{id}</td>
+      <td className='table-description-elem'>{author}</td>
+      <td className='table-description-elem'>{maxScore}</td>
+      <td className='table-description-elem'>
+        <button className='table-description-bth' onClick={onShow}>SHOW</button>
       </td>
     </tr>
     )
