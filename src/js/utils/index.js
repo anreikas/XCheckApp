@@ -62,7 +62,7 @@ export const UrlConstructor = (url, params, options = {}) => {
     Object.entries(params)
       .map((el) => el.join(equalSign))
       .join(separator)
-    }`;
+  }`;
 };
 
 export const UrlPath = (...args) => args.join('/');
@@ -90,12 +90,18 @@ export const FetchReq = async (url, method = 'GET', data) => {
     throw error;
   }
 
-  const {headers} = response;
-  // X-Total-Count
-  console.log( '@FetchReq : ', headers );
-
   const result = await response.json();
 
   return result;
 };
 
+export const TextSorter = (a, b) => {
+  const nameA = a.author.toLowerCase();
+  const nameB = b.author.toLowerCase();
+
+  if (nameA < nameB) {
+    return -1;
+  }
+  if (nameA > nameB) return 1;
+  return 0; // Никакой сортировки
+};
