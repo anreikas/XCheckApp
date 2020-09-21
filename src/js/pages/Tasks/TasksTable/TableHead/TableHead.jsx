@@ -1,32 +1,70 @@
 import React, { useState } from 'react';
 import PopupWindow from './PopupWindow/PopupWindow';
+import SortControl from './SortControl/SortControl';
 import './TableHead.scss';
 
 const TableHead = ({tasks, setDataTable}) => {
 
   const [sortFlag, setSortFlag] = useState('');
+  const [isSortTasks, setIsSortTasks] = useState('');
+  const [isSortAuthor, setIsSortAuthor] = useState('');
+  const [authorTasks, setAuthorTasks] = useState(tasks);
 
-  const sortTask = (value) => {
+  const sortTasksUp = (arr) => {
+    setSortFlag('false');
+    setIsSortAuthor('false');
+    setAuthorTasks(arr);
+    let newArr = JSON.parse(JSON.stringify(arr));
+    setDataTable(newArr.sort((a, b) => a.id > b.id ? 1: -1));
+  }
+  const sortTasksDown = (arr) => {
+    setSortFlag('false');
+    setIsSortAuthor('false');
+    setAuthorTasks(arr);
+    let newArr = JSON.parse(JSON.stringify(arr));
+    setDataTable(newArr.sort((a, b) => a.id > b.id ? -1: 1));
+  }
+  const sortAuthorUp = (arr) => {
+    setSortFlag('false');
+    setIsSortTasks('false');
+    setAuthorTasks(arr);
+    let newArr = JSON.parse(JSON.stringify(arr));
+    setDataTable(newArr.sort((a, b) => a.author > b.author ? 1: -1));
+  }
+  const sortAuthorDown = (arr) => {
+    setSortFlag('false');
+    setIsSortTasks('false');
+    setAuthorTasks(arr);
+    let newArr = JSON.parse(JSON.stringify(arr));
+    setDataTable(newArr.sort((a, b) => a.author > b.author ? -1: 1));
+  }
+  const sortScoreUp = (arr) => {
+    setIsSortAuthor('false');
+    setIsSortTasks('false');
+    let newArr = JSON.parse(JSON.stringify(arr));
+    setDataTable(newArr.sort((a, b) => a.items.map(item => item.maxScore)
+    .reduce((a, b) => a + b) > b.items.map(item => item.maxScore)
+    .reduce((a, b) => a + b) ? 1 : -1));
+  }
+  const sortScoreDown = (arr) => {
+    setIsSortAuthor('false');
+    setIsSortTasks('false');
+    let newArr = JSON.parse(JSON.stringify(arr));
+    setDataTable(newArr.sort((a, b) => a.items.map(item => item.maxScore)
+    .reduce((a, b) => a + b) > b.items.map(item => item.maxScore)
+    .reduce((a, b) => a + b) ? -1 : 1));
+  }
+  const searchTask = (value) => {
     let newArr = JSON.parse(JSON.stringify(tasks));
     setDataTable(newArr.filter(el => el.id === value));
   }
-  const sortAuthor = (value) => {
+  const searchAuthor = (value) => {
     let newArr = JSON.parse(JSON.stringify(tasks));
-    setDataTable(newArr.filter(el => el.author === value));
+    newArr = newArr.filter(el => el.author === value)
+    setAuthorTasks(newArr);
+    setDataTable(newArr);
   }
-  const sortScoreUp = (arr) => {
-    let newArr = JSON.parse(JSON.stringify(arr));
-    return newArr.sort((a, b) => a.items.map(item => item.maxScore)
-    .reduce((a, b) => a + b) > b.items.map(item => item.maxScore)
-    .reduce((a, b) => a + b) ? 1 : -1);
-  }
-  const sortScoreDown = (arr) => {
-    let newArr = JSON.parse(JSON.stringify(arr));
-    return newArr.sort((a, b) => a.items.map(item => item.maxScore)
-    .reduce((a, b) => a + b) > b.items.map(item => item.maxScore)
-    .reduce((a, b) => a + b) ? -1 : 1);
-  }
-
+  
   const [isSearchTask, setIsSearchTask] = useState(false);
   const [isSearchAuthor, setIsSearchAuthor] = useState(false);
   const handleSearchTask = () => {
@@ -48,34 +86,61 @@ const TableHead = ({tasks, setDataTable}) => {
 
   const handleReset = () => {
     setSortFlag('');
+    setAuthorTasks(tasks);
+    setIsSortTasks('');
+    setIsSortAuthor('');
     setDataTable(tasks);
   }
 
   return (
     <tr>
-      <th className='tasks__table__header-item'>Task-Name
-        <PopupWindow searchFlag={isSearchTask} setSearchFlag={setIsSearchTask} sortName={sortTask} placehold='Search task-name' />
-        <span className='tasks__table__header-loupe' onClick={handleSearchTask}>
-        &#9906;
-        </span>
+      <th className='tasks__table__header-item'>
+        <div className='tasks__table__header-item__wrap'>
+          <span>Task</span>
+          <SortControl isSort={isSortTasks}
+                       setIsSort={setIsSortTasks}
+                       sortUp={sortTasksUp}
+                       sortDown={sortTasksDown}
+                       tasks={tasks}  />
+          <div className='tasks__table__header__search'>
+            <span className='tasks__table__header-loupe' onClick={handleSearchTask}>
+              &#9906;
+            </span>
+          </div>
+        </div>
+        <PopupWindow searchFlag={isSearchTask}
+                     setSearchFlag={setIsSearchTask}
+                     sortName={searchTask}
+                     placehold='Search task-name' />
       </th>
-      <th className='tasks__table__header-item'>Author
-        <PopupWindow searchFlag={isSearchAuthor} setSearchFlag={setIsSearchAuthor} sortName={sortAuthor} placehold='Search author' />
-        <span className='tasks__table__header-loupe' onClick={handleSearchAuthor}>
-        &#9906;
-        </span>
+      <th className='tasks__table__header-item'>
+        <div className='tasks__table__header-item__wrap'>
+          <span>Author</span>
+          <SortControl isSort={isSortAuthor}
+                       setIsSort={setIsSortAuthor}
+                       sortUp={sortAuthorUp}
+                       sortDown={sortAuthorDown}
+                       tasks={tasks}  />
+          <div className='tasks__table__header__search'>
+            <span className='tasks__table__header-loupe' onClick={handleSearchAuthor}>
+              &#9906;
+            </span>
+          </div>
+        </div>
+        <PopupWindow searchFlag={isSearchAuthor}
+                     setSearchFlag={setIsSearchAuthor}
+                     sortName={searchAuthor}
+                     placehold='Search author' />
+        
       </th>
-      <th onClick={() => {
-        if (sortFlag) {
-          setSortFlag(false);
-          setDataTable(sortScoreUp(tasks));
-        } else {
-          setSortFlag(true);
-          setDataTable(sortScoreDown(tasks));
-        }
-      }}  className='tasks__table__header-item'>Max score 
-        <div className='table__header-item__wrap'>
-          <span>&#9650;</span><br/><span>&#9660;</span>
+      <th className='tasks__table__header-item'>
+        <div className='tasks__table__header-item__wrap'>
+          <span>Max score</span>
+          <SortControl isSort={sortFlag}
+                       setIsSort={setSortFlag}
+                       sortUp={sortScoreUp}
+                       sortDown={sortScoreDown}
+                       tasks={authorTasks}  />
         </div>
       </th>
       <th className='tasks__table__header-item'>

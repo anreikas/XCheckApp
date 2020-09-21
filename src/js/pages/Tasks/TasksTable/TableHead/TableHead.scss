@@ -2,29 +2,19 @@
   &-item {
     position: relative;
     font-weight: normal;
-    .table__header-item__wrap {
-      position: absolute;
-      display: inline-block;
-      font-weight: normal;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 0;
-      width: 20px;
-      text-align: center;
-      right: 5px;
-      cursor: pointer;
-  
-      & > * {
-        line-height: 1;
-        font-size: .7rem;
-        color: #bfbfbf;
-      }
+    .tasks__table__header-item__wrap {
+      display: flex;
+      align-items: center;
     }
   }
   &-bth {
     width: 80px;
     border-radius: 5px;
     cursor: pointer;
+  }
+  &__search {
+    width: 100%;
+    text-align: right;
   }
   &-loupe {
     display: inline-block;
@@ -33,10 +23,7 @@
     line-height: 1;
     text-align: center;
     cursor: pointer;
-    position: absolute;
-    right: 1em;
-    top: 50%;
-    transform: translateY(-50%) rotate(-45deg);
+    transform: rotate(-45deg);
     font-weight: normal;
   }
 }
