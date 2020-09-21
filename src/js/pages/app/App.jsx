@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.scss';
 
 import Header from '../Header/Header';
@@ -10,19 +10,28 @@ import { Route } from 'react-router-dom';
 import Main from '../Main/Main';
 import Reviews from '../Reviews/Reviews';
 import Login from '../Login/Login';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const App = () => {
+  const { loginWithRedirect, user, isAuthenticated } = useAuth0();
+  const [role, setRole] = useState('Student');
+  useEffect(() => {
+    if(localStorage.getItem('role')) {
+      setRole(localStorage.getItem('role'));
+    }
+  })
+  
+  if(!isAuthenticated) return <Login loginWithRedirect={loginWithRedirect} isAuthenticated={isAuthenticated} setRole={setRole} />
 
   return (
     <div className='app'>
-      <Header />
+      <Header isAuthenticated={isAuthenticated} />
       <Navbar />
       <div className='app-content'>
-        <Route path='/login' render={() => <Login /> }/>
-        <Route exact path='/' render={() => <Main /> }/>
+        <Route exact path='/' render={() => <Main role={role} isAuthenticated={isAuthenticated} user={user} /> }/>
         <Route path='/tasks' render={() => <Tasks /> }/>
         <Route path='/management' render={() => <TaskManager /> }/>
-        <Route path='/requests' render={() => <Requests /> }/>
+        <Route path='/requests' render={() => <Requests user={user} /> }/>
         <Route path='/reviews' render={() => <Reviews /> }/>
       </div>
     </div>

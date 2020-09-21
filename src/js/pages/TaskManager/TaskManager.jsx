@@ -1,7 +1,7 @@
 import React from 'react';
 import './TaskManager.scss';
 
-const TaskManager = (props) => {
+const TaskManager = () => {
   return (
     <div className='task-manager'>
       Task Manager
