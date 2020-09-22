@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
+import { tasksAPI } from '../../utils';
 
 const initialState = {
   tasks: null
@@ -20,7 +21,6 @@ export const tasksReducer = TasksSlice.reducer;
 export const { updateTasks } = TasksSlice.actions;
 
 export const getTasks = () => async (dispatch) => {
-  const response = await fetch('https://x-check.herokuapp.com/tasks');
-  const tasks = await response.json();
+  const tasks = await tasksAPI.getTasks();
   dispatch(updateTasks({tasks}))
 }

@@ -1,54 +1,40 @@
 import React, { useEffect } from 'react';
 import './Main.scss';
 import JSONPretty from 'react-json-pretty';
+import MainStudent from './MainStudent/MainStudent';
+import { usersAPI } from '../../utils';
 
-const Main = ({role, user, isAuthenticated}) => {
+const Main = ({ user, isAuthenticated, role}) => {
+
   const userSubmit = async (role) => {
-      const response = await fetch(`https://x-check.herokuapp.com/users?githubId=${user.nickname}`);
-      const userData = await response.json();
-      if (!userData.length) {
-        const url = 'https://x-check.herokuapp.com/users';
-        const data = {
-            id: user.sub.split("|").pop(),
-            githubId: user.nickname,
-            roles: [role],
-        };
-        await fetch(url, {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        });
-      } else {
-        const url = `https://x-check.herokuapp.com/users/${user.sub.split("|").pop()}`;
-        const data = {
-            id: user.sub.split("|").pop(),
-            githubId: user.nickname,
-            roles: [role],
-        };
-        await fetch(url, {
-          method: 'PUT',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        });
-      }
+    const userData = await usersAPI.getUser(user.nickname);
+    if (!userData.length) {
+      await usersAPI.setUser(user.sub.split("|").pop(), user.nickname, [role]);
+    } else {
+      await usersAPI.updateUser(user.sub.split("|").pop(), user.nickname, [role]);
+    }
   }
   useEffect(() => {
     if(isAuthenticated) {
       userSubmit(role);
     }
   }, [role])
+
   return (
     isAuthenticated && (
-      <div>
-        <img src={user.picture} alt={user.name}/>
-        <h2>{user.name}</h2>
-        <p>{user.email}</p>
+      <div className='main'>
+        <div className='main__profile'>
+          <img className='main__profile-photo' src={user.picture} alt={user.name}/>
+          <div className='main__profile__data'>
+            <h2 className='main__profile__data-name'>{user.name}</h2>
+            <p>nickname: {user.nickname}</p>
+            <p>email: {user.email}</p>
+            <p>role: {role}</p>
+          </div>
+        </div>
+        <div className='main__control'>
+          {role === 'Student' && <MainStudent />}
+        </div>
         <JSONPretty data={user} />
         {/* { JSON.stringify(user, null, 2) } */}
       </div>
