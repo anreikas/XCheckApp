@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
 import {Form,Button,Modal,Alert} from 'react-bootstrap'
-import Range from './range'
+import Range from './range/index'
 
 
 export default ({show,handleClose,task}) => {
@@ -33,22 +33,22 @@ export default ({show,handleClose,task}) => {
           <Modal.Header closeButton>
             <Modal.Title className="w-100">
                 <div className='d-flex justify-content-between align-items-center'>
-                   <p className="my-0">{task.id}</p> 
+                   <p className="my-0">{task.id}</p>
                    <div className='d-flex align-items-center'>
                         <Button variant="secondary" onClick={reset}>
                             Reset
                         </Button>
-                        <p className="my-0 mx-2">Score: {score}</p>  
-                   </div> 
+                        <p className="my-0 mx-2">Score: {score}</p>
+                   </div>
                 </div>
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form>
-              {task.categoriesOrder.map((el) => 
+              {task.categoriesOrder.map((el) =>
                 <div key={el}>
                     <Alert variant='primary'><h2>{el}</h2></Alert>
-                  {task.items.filter(item => item.category === el).map(({id,minScore,maxScore,category,title,description}, i) => 
+                  {task.items.filter(item => item.category === el).map(({id,minScore,maxScore,category,title,description}, i) =>
                     <Alert variant='warning' key={i}>
                       <h3>{title}</h3>
                       <p>Балл за выполнение: {maxScore}</p>
