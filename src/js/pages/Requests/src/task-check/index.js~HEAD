@@ -2,11 +2,20 @@ import React,{useState} from 'react'
 import {Form,Button,Modal,Alert} from 'react-bootstrap'
 import Range from './range'
 
+import {reviewRequests} from './../../../../utils/index.js'
 
-export default ({show,handleClose,task}) => {
+
+export default ({show,handleClose,task,name,finalSubmit}) => {
 
     const [score, setScore] = useState(0)
+    const [scoreDetails, setScoreDetails] = useState()
+
     const [isReset, setIsReset] = useState(false)
+    const [showFinal, setShowFinal] = useState(false)
+
+    const [deploy, setDeploy] = useState('')
+    const [git, setGit] = useState('')
+
 
     const reset = () => {
         setScore(0)
@@ -22,13 +31,58 @@ export default ({show,handleClose,task}) => {
       setIsReset(false)
     }
 
+    function submit(){
+      handleClose();
+      setShowFinal(true)
+    }
+
+    function closeFinal(){
+      setShowFinal(false)
+      setScore(0)
+    }
+
+    
+
+    async function submitFinal(){
+
+      let obj = {
+        "id": `req-id-${Date.now()}`,
+        "crossCheckSessionId": "rss2020Q3react-xcheck",
+        "author": name,
+        "task": task.id,
+        "state": "PUBLISHED",
+        "selfGrade": {
+          "task": task.id,
+          "items": scoreDetails
+        },
+        "deployLink" : deploy,
+        "githubLink" : git,
+        "score": score
+      }
+
+      await reviewRequests.postRequest(obj)
+      setShowFinal(false)
+      
+      finalSubmit()
+    }
+
 
     const changeScore = () => {
+
+        let obj = {}
+
         let sum = [...document.querySelectorAll('.review-range')].map(el => +el.value).reduce((a, b) => a + b);
+        [...document.querySelectorAll('.review-range')].forEach(el => {
+          obj[el.dataset.idk] = { "score" : el.value};
+        })
+
+        setScoreDetails(obj)
+        console.log(obj)
         setScore(sum)
     }
 
     return (
+      <>
         <Modal show={show} onHide={close} size={'xl'}>
           <Modal.Header closeButton>
             <Modal.Title className="w-100">
@@ -59,6 +113,7 @@ export default ({show,handleClose,task}) => {
                                 min={minScore}
                                 max={maxScore}
                                 changeScore={(scr)=>changeScore(scr)}
+                                idk={id}
                             />
                     </Alert>
                   )}
@@ -70,10 +125,38 @@ export default ({show,handleClose,task}) => {
             {/* <Button variant="secondary" onClick={close}>
               Close
             </Button> */}
-            <Button variant="primary" onClick={close}>
+            <Button variant="primary" onClick={submit}>
               Отправить результат
             </Button>
           </Modal.Footer>
         </Modal>
+        
+        <Modal show={showFinal} onHide={closeFinal} size={'xl'}>
+          <Modal.Header closeButton>
+            <Modal.Title className="w-100">
+                <div className='d-flex justify-content-between align-items-center'>
+                   <p>deploy links</p>
+                </div>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group controlId="formBasicPassword">
+                <Form.Label>Deploy link</Form.Label>
+                <Form.Control type="text" placeholder="Deploy link" value={deploy} onChange={(e)=>setDeploy(e.target.value)}/>
+              </Form.Group>
+              <Form.Group controlId="formBasicPassword">
+                <Form.Label>Github link</Form.Label>
+                <Form.Control type="text" placeholder="Deploy link" value={git} onChange={(e)=>setGit(e.target.value)}/>
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="primary" onClick={submitFinal}>
+              Отправить результат
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        </>
     )
 }
