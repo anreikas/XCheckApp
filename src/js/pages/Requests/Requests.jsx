@@ -1,12 +1,10 @@
 import React from 'react';
-import './Requests.scss';
+import App from './src/App';
 
-const Requests = (props) => {
-  return (
+const Requests = () => (
     <div>
-      REQUESTS
+      <App/>
     </div>
-  )
-}
+);
 
 export default Requests;
