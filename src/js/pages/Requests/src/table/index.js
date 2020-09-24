@@ -1,24 +1,23 @@
-import React, { useEffect,useState } from 'react'
-// import {review} from '../data.js'
-import { Table,Tag,Button  } from 'antd';
-import {reviewRequests} from './../../../../utils/index.js'
+import React from 'react'
+import {review} from '../data.js'
+import { Table,Tag } from 'antd';
 
-
-
+// export default () => {
+//     return(
+//         <div>hi</div>
+//     )
+// }
 
 const columns = [
     {
       title: 'task',
       dataIndex: 'task',
-      deploy: 'deploy',
-      render:  (dataIndex,obj) => <a href={obj.deploy}>{dataIndex}</a>,
       onFilter: (value, record) => record.task.indexOf(value) === 0,
       sorter: (a, b) => a.task.length - b.task.length,
     },
     {
       title: 'author',
       dataIndex: 'author',
-      render:  (dataIndex,obj) => <a href={obj.git}>{dataIndex}</a>,
       onFilter: (value, record) => record.author.indexOf(value) === 0,
       sorter: (a, b) => a.author.length - b.author.length,
     },
@@ -43,29 +42,22 @@ const columns = [
     },
   ];
 
+  const datas = review.map( el => {
+      let scr = el.grade.items.basic_p1.score + el.grade.items.extra_p1.score + el.grade.items.fines_p1.score
+      return{
+        key : el.author,
+        task : el.grade.task,
+        author : el.author,
+        state: el.state,
+        score: scr,
+      }
+  })
+
 
 
   export default () => {
-      const [data, setData] = useState([])
-      
-
-      useEffect(()=>{
-        reviewRequests.getRequests().then((body)=>{
-          setData(body.map( el => {
-            return{
-              key : el.id,
-              task : el.task,
-              author : el.author,
-              state: el.state,
-              score: el.selfGrade,
-              deploy: el.deployLink,
-              git: el.githubLink
-            }
-        }))
-        })
-      },[reviewRequests])
-
+      console.log(datas)
       return(
-        <Table columns={columns} bordered dataSource={data} />
+        <Table columns={columns} bordered dataSource={datas} />
       )
   }

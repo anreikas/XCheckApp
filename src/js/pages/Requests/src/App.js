@@ -1,18 +1,14 @@
-import React,{useEffect, useState} from 'react';
+import React,{useState} from 'react';
 import './App.css';
 import 'antd/dist/antd.css';
-// import {task as taskData} from './data'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {task as taskData} from './data'
 import {Form,Button} from 'react-bootstrap'
 import Table from './table'
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-import {reviewRequests} from './../../../utils/index.js'
 
 import TaskCheck from './task-check'
 
-export default function App({props}) {
-
-  const [taskData, setTaskData] = useState([]);
+export default function App() {
 
   const [task, setTask] = useState(null)
   const [show, setShow] = useState(false);
@@ -21,17 +17,9 @@ export default function App({props}) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-
   let tasks = taskData.map(({id})=>{
     return <option key={id}>{id}</option>
   })
-
-
-
-  useEffect(() => {
-    reviewRequests.getTask().then((body)=>setTaskData(body))
-    // reviewRequests.getRequests().then((body)=>setTaskData(body))
-  },[reviewRequests])
   
 
   function optionChange(e){
@@ -47,8 +35,8 @@ export default function App({props}) {
 
   const submit = () => {
     handleClose()
+    setShowTable(true)
   }
-  
 
   const tableDisplay = {
     display: showTable ? 'block' : 'none'
@@ -77,8 +65,6 @@ export default function App({props}) {
         show={show}
         handleClose={submit}
         task={task}
-        name={props.user.nickname}
-        finalSubmit={()=>setShowTable(true)}
         /> : null}
     </div>
     <div className="container mt-5" style={tableDisplay}>

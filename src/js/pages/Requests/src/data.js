@@ -1,3 +1,4 @@
+
 const user = {
     githubId: "torvalds",
     roles: ["author", "student", "supervisor", "course_manager"]

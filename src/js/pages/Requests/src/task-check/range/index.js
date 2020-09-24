@@ -1,7 +1,7 @@
 import React,{useState, useEffect } from 'react'
 import {Form} from 'react-bootstrap'
 
-export default ({changeScore,min,max,isReset,resetCallBack, idk}) => {
+export default ({changeScore,min,max,isReset,resetCallBack}) => {
 
     const [change, setChange] = useState(0); 
 
@@ -22,13 +22,13 @@ export default ({changeScore,min,max,isReset,resetCallBack, idk}) => {
         changeScore();
     }
 
-    return(
+    
 
+    return(
         <Form.Group controlId="formBasicRange">
                 <Form.Label>{change}</Form.Label>
                     <Form.Control 
-                        data-idk={idk}
-                        className='review-range'
+                        className="review-range"
                         min={min} 
                         max={max} 
                         // defaultValue={0}
