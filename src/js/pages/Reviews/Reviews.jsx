@@ -4,10 +4,15 @@ import App from './src/App'
 
 const Reviews = (props) => {
   return (
-    <div>
-      <App/>
-    </div>
-  )
-}
+    <>
+      <TableComponent
+        columns={Columns}
+        url={path}
+        maxRows={MAX_ROWS}
+        onClick={onRowClickHandler}
+      />
+    </>
+  );
+};
 
 export default Reviews;
