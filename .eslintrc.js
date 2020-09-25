@@ -6,7 +6,7 @@ module.exports = {
     "node": true,
     "jest": true,
   },
-  "extends": "",
+  "extends": "airbnb-base",
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
