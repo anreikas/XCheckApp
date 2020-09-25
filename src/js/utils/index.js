@@ -12,7 +12,15 @@ export const tasksAPI = {
   async getTasks() {
     const response = await instance.get(`tasks`);
     return response.data;
-  }
+  },
+  async saveTask(task) {
+    const response = await instance.post(`tasks`, task);
+    return response.data;
+  },
+  async updateTask(id, task) {
+    const response = await instance.put(`tasks/${id}`, task);
+    return response.data;
+  },
 }
 
 export const usersAPI = {
