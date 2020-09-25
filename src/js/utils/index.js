@@ -13,16 +13,7 @@ export const tasksAPI = {
     const response = await instance.get('tasks');
     return response.data;
   },
-  async saveTask(task) {
-    const response = await instance.post(`tasks`, task);
-    return response.data;
-  },
-  async updateTask(id, task) {
-    const response = await instance.put(`tasks/${id}`, task);
-    return response.data;
-  },
-}
-
+};
 
 export const usersAPI = {
   async getUser(id) {
@@ -38,11 +29,46 @@ export const usersAPI = {
     const response = await instance.put(`users/${id}`, { id, githubId, roles });
     return response.data;
   },
-}
+};
 
-/* eslint-disable indent */
-/* eslint-disable spaced-comment */
-/* eslint-disable no-unreachable */
+export const reviewRequests = {
+  async getRequests() {
+    const response = await instance.get('reviewRequests');
+    const data = await response.data;
+    return data;
+  },
+  async getTask(id) {
+    const response = await instance.get(`tasks/${id}`);
+    const data = await response.data;
+    return data;
+  },
+  async postRequest(obj) {
+    const response = await instance.post('reviewRequests', obj);
+    const data = await response.data;
+    return data;
+  },
+  async postReview(review) {
+    const response = await instance.post('reviews', review);
+    const data = await response.data;
+    return data;
+  },
+  async getRequestById(id) {
+    const response = await instance.get(`reviewRequests/${id}`);
+    const data = await response.data;
+    return data;
+  },
+  async updateRequest(request) {
+    const { id } = request;
+    const response = await instance.put(`reviewRequests/${id}`, request);
+    const data = await response.data;
+    return data;
+  },
+  async getRequestByTaskId(taskId, author) {
+    const response = await instance.get(`reviewRequests?task=${taskId} ${author ? `&author=${author}` : ''}`);
+    const data = await response.data;
+    return data;
+  },
+};
 
 const URL_DATA_SEPARATOR = '&';
 
@@ -59,7 +85,6 @@ export const UrlConstructor = (url, params, options = {}) => {
 export const UrlPath = (...args) => args.join('/');
 
 export const FetchReq = async (url, method = 'GET', data) => {
-  console.log('@FetchReq : url', url);
   const req = {
     method,
     headers: {
@@ -84,63 +109,11 @@ export const FetchReq = async (url, method = 'GET', data) => {
 
   const result = await response.json();
 
-  return result;
-};
+  const Total = Number(response.headers.get('X-Total-Count'));
 
-export const TextSorter = (a, b) => {
-  const nameA = a.author.toLowerCase();
-  const nameB = b.author.toLowerCase();
-
-  if (nameA < nameB) {
-    return -1;
+  if (!Number.isNaN(Total)) {
+    result.Total = Total;
   }
-  if (nameA > nameB) return 1;
-  return 0; // Никакой сортировки
-};
-
-/* eslint-disable indent */
-/* eslint-disable spaced-comment */
-/* eslint-disable no-unreachable */
-
-const URL_DATA_SEPARATOR = '&';
-
-export const UrlConstructor = (url, params, options = {}) => {
-  const { separator = URL_DATA_SEPARATOR, equalSign = '=' } = options;
-
-  return `${url}?${
-    Object.entries(params)
-      .map((el) => el.join(equalSign))
-      .join(separator)
-  }`;
-};
-
-export const UrlPath = (...args) => args.join('/');
-
-export const FetchReq = async (url, method = 'GET', data) => {
-  console.log('@FetchReq : url', url);
-  const req = {
-    method,
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  };
-
-  if (data) {
-    req.body = data;
-  }
-
-  const response = await fetch(url, req).catch();
-
-  if (!response.ok) {
-    const error = Object.assign(Error.prototype, {
-      response,
-    });
-
-    throw error;
-  }
-
-  const result = await response.json();
 
   return result;
 };
