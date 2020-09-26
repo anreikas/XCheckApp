@@ -50,7 +50,6 @@ export const UrlConstructor = (url, params, options = {}) => {
 export const UrlPath = (...args) => args.join('/');
 
 export const FetchReq = async (url, method = 'GET', data) => {
-  console.log('@FetchReq : url', url);
   const req = {
     method,
     headers: {
@@ -75,10 +74,17 @@ export const FetchReq = async (url, method = 'GET', data) => {
 
   const result = await response.json();
 
+  const Total = Number(response.headers.get('X-Total-Count'));
+
+  if (!Number.isNaN(Total)) {
+    result.Total = Total;
+  }
+
   return result;
 };
 
 export const TextSorter = (a, b) => {
+  console.log( '@TextSorter : ', a, b );
   const nameA = a.author.toLowerCase();
   const nameB = b.author.toLowerCase();
 

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Highlighter from 'react-highlight-words';
 import 'antd/dist/antd.css';
 import {
-  Table, Space, Input, Button, Form, Switch,
+  Table, Space, Input, Button,
 } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { FetchReq, UrlConstructor, TextSorter } from '../../utils';
@@ -14,13 +14,14 @@ const MAX_ROWS = 5;
 const START_PAGE = 1;
 
 const TableComponent = ({
-  columns, url, maxRows = MAX_ROWS, onClick,
+  columns, url, maxRows = MAX_ROWS, onClick, filter = {},
 }) => {
   const searchInput = useRef(null);
   const searchState = useRef({
     text: '',
     column: '',
   });
+  const [total, setTotal] = useState(maxRows);
   const [loading, setLoading] = useState(true);
   const [Columns, setColumns] = useState(columns);
   const [dataSource, setDataSource] = useState([]);
@@ -42,10 +43,19 @@ const TableComponent = ({
   });
 
   const getData = useCallback(async (page) => {
-    // const path = UrlPath(SERVER_URL, 'reviews');
-    const reqUrl = UrlConstructor(url, { _page: page, _limit: maxRows });
+    const reqUrl = UrlConstructor(url, { _page: page, _limit: maxRows, ...filter });
 
     let data = await FetchReq(reqUrl);
+
+    let { Total } = data;
+
+    if (Total) {
+      if (Total % maxRows) {
+        Total = Math.ceil(Total / maxRows) * maxRows;
+      }
+
+      setTotal(Total);
+    }
 
     if (Array.isArray(data)) {
       data = (Array.isArray(data) ? data : [data]).map((el) => ({
@@ -57,15 +67,16 @@ const TableComponent = ({
     return data;
   }, [url]);
   const getColumnSearchProps = useCallback(
-    ({ dataIndex, textType, sorter }) => {
+    ({ dataIndex, sorter }) => {
       let sorterMethod = false;
 
       if (typeof sorter === 'function') {
         sorterMethod = sorter;
       } else if (typeof sorter === 'boolean' && sorter) {
-        if (textType) sorterMethod = TextSorter;
-        else sorterMethod = true;
+        sorterMethod = (a, b) => (a[dataIndex] > b[dataIndex] ? 1 : -1);
       }
+
+      console.log(sorterMethod)
 
       return {
         filterDropdown: ({
@@ -126,9 +137,6 @@ const TableComponent = ({
     },
     [searchState],
   );
-  const handleLoading = useCallback(() => {
-    setLoading(!loading);
-  }, [loading]);
 
   useEffect(() => {
     const columnsWithProps = Columns.map((column) => {
@@ -149,7 +157,6 @@ const TableComponent = ({
   }, []);
 
   useEffect(() => {
-    console.log(pageNumber);
     const showData = async () => {
       setLoading(true);
       const data = await getData(pageNumber);
@@ -163,17 +170,14 @@ const TableComponent = ({
 
   return (
     <>
-      <Form.Item label="loading">
-        <Switch checked={loading} onChange={handleLoading} />
-      </Form.Item>
       <Table
         dataSource={dataSource}
         columns={Columns}
         loading={loading}
         pagination={{
-          total: 50,
+          total,
           current: pageNumber,
-          pageSize: MAX_ROWS,
+          pageSize: maxRows,
           onChange: setPageNumber,
         }}
         onRow={(record, rowIndex) => ({
@@ -184,7 +188,7 @@ const TableComponent = ({
           onMouseLeave: () => {}, // mouse leave row
         })
         }
-      />;
+      />
     </>
   );
 };

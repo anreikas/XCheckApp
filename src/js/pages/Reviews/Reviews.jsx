@@ -19,14 +19,12 @@ const Reviews = () => {
       width: '30%',
       editable: true,
       searched: true,
-      textType: true,
       sorter: true,
     },
     {
       title: 'Author',
       dataIndex: 'author',
       searched: true,
-      textType: true,
       sorter: true,
     },
     {
@@ -51,12 +49,21 @@ const Reviews = () => {
   const onRowClickHandler = useCallback((record, rowIndex) => console.log('hello', record, ' / ', rowIndex));
 
   return (
-    <TableComponent
-      columns={Columns}
-      url={path}
-      maxRows={MAX_ROWS}
-      onClick={onRowClickHandler}
-    />
+    <>
+      <TableComponent
+        columns={Columns}
+        url={UrlPath(SERVER_URL, 'tasks')}
+        maxRows={MAX_ROWS}
+        onClick={onRowClickHandler}
+      />
+      <TableComponent
+        columns={Columns}
+        url={path}
+        filter={{ author: 'rgovin' }}
+        maxRows={MAX_ROWS}
+        onClick={onRowClickHandler}
+      />
+    </>
   );
 };
 
