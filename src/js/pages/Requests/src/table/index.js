@@ -1,63 +1,60 @@
-import React from 'react'
-import {review} from '../data.js'
-import { Table,Tag } from 'antd';
+/* eslint-disable camelcase */
+import React from 'react';
+import { Tag } from 'antd';
+import Table from '../../../../components/Table';
+import { UrlPath } from '../../../../utils';
+import { SERVER_URL } from '../../../../constants';
 
-// export default () => {
-//     return(
-//         <div>hi</div>
-//     )
-// }
-
+const MAX_ROWS = 30;
 const columns = [
-    {
-      title: 'task',
-      dataIndex: 'task',
-      onFilter: (value, record) => record.task.indexOf(value) === 0,
-      sorter: (a, b) => a.task.length - b.task.length,
-    },
-    {
-      title: 'author',
-      dataIndex: 'author',
-      onFilter: (value, record) => record.author.indexOf(value) === 0,
-      sorter: (a, b) => a.author.length - b.author.length,
-    },
-    {
-      title: 'state',
-      dataIndex: 'state',
-      render: tag => (
-              <Tag color={'geekblue'} key={tag}>
-                {tag}
-              </Tag>
-      ),
-      onFilter: (value, record) => record.tags.indexOf(value) === 0,
-      sorter: (a, b) => a.tags.length - b.tags.length,
-    },
-    {
-      title: 'score',
-      dataIndex: 'score',
-      sorter: {
-        compare: (a, b) => a.score - b.score,
-        multiple: 1,
-      },
-    },
-  ];
+  {
+    title: 'task',
+    dataIndex: 'id',
+    searched: true,
+    sorter: true,
+  },
+  {
+    title: 'author',
+    dataIndex: 'author',
+    searched: true,
+    sorter: true,
+  },
+  {
+    title: 'state',
+    dataIndex: 'state',
+    render: (tag) => (
+      <Tag color={'geekblue'} key={tag}>
+        {tag}
+      </Tag>
+    ),
+    sorter: true,
+  },
+  {
+    title: 'score',
+    dataIndex: 'score',
+    sorter: true,
+    map: ((record) => {
+      const { selfGrade = {} } = record;
+      const { items } = selfGrade;
 
-  const datas = review.map( el => {
-      let scr = el.grade.items.basic_p1.score + el.grade.items.extra_p1.score + el.grade.items.fines_p1.score
-      return{
-        key : el.author,
-        task : el.grade.task,
-        author : el.author,
-        state: el.state,
-        score: scr,
+      if (items) {
+        return Object.entries(items).reduce((acc, [, value]) => {
+          const { score } = value;
+
+          return acc + score;
+        }, 0);
       }
-  })
 
+      return '--';
+    }),
+  },
+];
 
-
-  export default () => {
-      console.log(datas)
-      return(
-        <Table columns={columns} bordered dataSource={datas} />
-      )
-  }
+export default ({ onClick }) => (
+  <Table
+    onClick={onClick}
+    columns={columns}
+    url={UrlPath(SERVER_URL, 'reviewRequests')}
+    maxRows={MAX_ROWS}
+  />
+);

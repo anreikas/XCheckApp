@@ -1,48 +1,52 @@
-import React,{useState} from 'react';
+import React, { useState, useCallback } from 'react';
 import './App.css';
 import 'antd/dist/antd.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {task as taskData} from './data'
-import {Form,Button} from 'react-bootstrap'
-import Table from './table'
+import { Form, Button } from 'react-bootstrap';
+import { task as taskData } from './data';
+import Table from './table';
 
-import TaskCheck from './task-check'
+import TaskCheck from './task-check';
 
 export default function App() {
-
-  const [task, setTask] = useState(null)
+  const [task, setTask] = useState(null);
   const [show, setShow] = useState(false);
   const [showTable, setShowTable] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
 
-  let tasks = taskData.map(({id})=>{
-    return <option key={id}>{id}</option>
-  })
-  
-
-  function optionChange(e){
-    if(e.target.value !== '--выберите Task--') {
-      let obj = taskData.filter( el => el.id === e.target.value)
-      setTask(obj[0])
-      console.log(task)
-    }else{
-      setTask(null)
-    }
-    
+    setShow(true);
   }
+
+  const tasks = taskData.map(({ id }) => <option key={id}>{id}</option>);
+
+  function optionChange(e) {
+    if (e.target.value !== '--выберите Task--') {
+      const obj = taskData.filter((el) => el.id === e.target.value);
+      setTask(obj[0]);
+      console.log(task);
+    } else {
+      setTask(null);
+    }
+  }
+
+  const onRowClick = useCallback((record) => {
+    // console.log( '@ : ', record );
+    setTask(record);
+    setShow(true);
+  }); // , [input]
 
   const submit = () => {
-    handleClose()
-    setShowTable(true)
-  }
+    handleClose();
+    setShowTable(true);
+  };
 
   const tableDisplay = {
-    display: showTable ? 'block' : 'none'
-  }
+    display: showTable ? 'block' : 'none',
+  };
 
-  return  (<>
+  return (<>
     <div className="container mt-5">
       <Form>
         <Form.Group controlId="exampleForm.SelectCustom">
@@ -55,22 +59,22 @@ export default function App() {
       </Form>
     </div>
     <div className="container">
-      {task ?  
-      <Button variant="primary mt-1" onClick={handleShow}>Проверить {task.id}</Button> 
-      : null}
+      {task
+        ? <Button variant="primary mt-1" onClick={handleShow}>Проверить {task.id}</Button>
+        : null}
     </div>
     <div className="container">
-        {task ? 
-        <TaskCheck
-        show={show}
-        handleClose={submit}
-        task={task}
-        /> : null}
+      {task
+        ? <TaskCheck
+          show={show}
+          handleClose={submit}
+          task={task}
+        />
+        : null}
     </div>
     <div className="container mt-5" style={tableDisplay}>
-      <Table/>
+      <Table onClick={onRowClick}/>
     </div>
-    
-  </>)
 
+  </>);
 }

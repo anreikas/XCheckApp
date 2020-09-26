@@ -124,7 +124,7 @@ const crossCheckSession = {
 
 const reviewRequest = {
     id: "rev-req-1",
-    crossCheckSessionId: "rss2020Q3react-xcheck", // may be null if this review is not a part of any session 
+    crossCheckSessionId: "rss2020Q3react-xcheck", // may be null if this review is not a part of any session
     author: "grigotiy",
     task: "simple-task-v1",
     state: "PUBLISHED", // enum [DRAFT, PUBLISHED, COMPLETED]
@@ -134,7 +134,7 @@ const reviewRequest = {
 
 const review = [{
     id: "rev-id-1",
-    requestId: "rev-req-1",
+    requestId1: "rev-req-1",
     author: "nikolay",
     state: "PUBLISHED", // enum [DRAFT, PUBLISHED, DISPUTED, ACCEPTED, REJECTED],
     grade: taskScore

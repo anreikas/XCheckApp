@@ -41,7 +41,6 @@ const TableComponent = ({
     };
     confirm();
   });
-
   const getData = useCallback(async (page) => {
     const reqUrl = UrlConstructor(url, { _page: page, _limit: maxRows, ...filter });
 
@@ -64,13 +63,30 @@ const TableComponent = ({
       }));
     }
 
+    const mappedColumns = Columns.filter(({ map }) => typeof map === 'function');
+
+    if (mappedColumns.length) {
+      console.log( '@ : mappedData',  mappedColumns);
+      data = data.map((el) => {
+        const mappedData = {};
+        mappedColumns.forEach(({ dataIndex, map }) => {
+          mappedData[dataIndex] = map(el);
+        });
+
+        return {
+          ...el,
+          ...mappedData,
+        };
+      });
+    }
+
     return data;
   }, [url]);
   const getColumnSearchProps = useCallback(
     ({ dataIndex, sorter }) => {
       let sorterMethod = false;
 
-      if (typeof sorter === 'function') {
+      if (typeof sorter === 'function' || typeof sorter === 'object') {
         sorterMethod = sorter;
       } else if (typeof sorter === 'boolean' && sorter) {
         sorterMethod = (a, b) => (a[dataIndex] > b[dataIndex] ? 1 : -1);
@@ -169,6 +185,7 @@ const TableComponent = ({
   return (
     <>
       <Table
+        bordered
         dataSource={dataSource}
         columns={Columns}
         loading={loading}
