@@ -2,6 +2,7 @@ import React from 'react';
 import './FormItemTask.scss';
 
 const FormItemTask = ({category, title, minscore, maxscore, description, nTask, setNtask, el, item}) => {
+  console.log(maxscore)
   return (
     <ul>
       <h4>{category}</h4>
@@ -20,9 +21,9 @@ const FormItemTask = ({category, title, minscore, maxscore, description, nTask, 
           <div>minScore:</div>
           <input type="number"
                  value={minscore}
-                 onChange={(e)=>setNtask({...nTask, items: nTask.items.map((elem,i)=> i === item
+                 onChange={ (e)=>setNtask({ ...nTask, items: nTask.items.map((elem,i)=> i === item
                                                             ?{...elem, minScore: +e.target.value}
-                                                            : {...elem})})} />
+                                                            : {...elem}) }) } />
         </label>
       </li>
       <li>

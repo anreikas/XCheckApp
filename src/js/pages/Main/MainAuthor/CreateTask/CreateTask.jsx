@@ -9,14 +9,16 @@ const CreateTask = ({ setUpdateTask,
                       updateTask,
                       tasksAuthor,
                       author,
-                      tasks}) => {
+                      tasks,
+                      taskId}) => {
   const task = updateTask
-  ?JSON.parse(JSON.stringify(tasksAuthor))[0]
+  ?JSON.parse(JSON.stringify(tasksAuthor)).find(el=> el.id === taskId)
   :{
     id: "",
     author: author,
     state: "DRAFT", // enum [DRAFT, PUBLISHED, ARCHIVED]
     categoriesOrder: ["Basic Scope", "Extra Scope", "Fines"],
+    score: '',
     items: [
       {
         id: "basic_p1",
@@ -64,7 +66,7 @@ const CreateTask = ({ setUpdateTask,
         </label><br/>
         <label>
           <div>state:</div>
-          <select onChange={e=>setNtask({...nTask, state: e.target.value})}>
+          <select onChange={e=>setNtask({...nTask, state: e.target.value})} value={nTask.state}>
             <option value="DRAFT">DRAFT</option>
             <option value="PUBLISHED">PUBLISHED</option>
             <option value="ARCHIVED">ARCHIVED</option>

@@ -21,6 +21,7 @@ export const tasksReducer = TasksSlice.reducer;
 export const { updateTasks } = TasksSlice.actions;
 
 export const getTasks = () => async (dispatch) => {
-  const tasks = await tasksAPI.getTasks();
-  dispatch(updateTasks({tasks}))
+  const tasks = await tasksAPI.getTasks()
+  .then(tasksData=> tasksData.filter(task => task.state === 'PUBLISHED'));
+  dispatch(updateTasks({tasks}));
 }

@@ -1,61 +1,53 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { Table, Tag } from 'antd';
 import 'antd/dist/antd.css';
+import TableComponent from '../../../../components/Table/Table';
+import { SERVER_URL } from '../../../../constants';
+import { UrlPath } from '../../../../utils';
 
-const AuthorTable = ({tasksAuthor, setCreateNewTask, setUpdateTask}) => {
+const AuthorTable = ({ setCreateNewTask, author, setUpdateTask,setTaskId}) => {
+
+  const MAX_ROWS = 3;
+  const path = UrlPath(SERVER_URL, 'tasks');
+
   const columns = [
     {
       title: 'task',
-      dataIndex: 'task',
-      onFilter: (value, record) => {
-        return record.task.indexOf(value) === 0
-      },
-      sorter: (a, b) => a.task > b.task?1:-1,
+      dataIndex: 'id',
+      width: '30%',
+      editable: true,
+      searched: true,
+      textType: true,
+      sorter: true,
     },
     {
       title: 'author',
       dataIndex: 'author',
-      onFilter: (value, record) => record.author.indexOf(value) === 0,
+      searched: true,
+      textType: true,
+      sorter: true,
     },
     {
       title: 'state',
       dataIndex: 'state',
-      onFilter: (value, record) => record.state.indexOf(value) === 0,
-      sorter: (a, b) => a.state > b.state ? 1: -1,
+      textType: true,
+      sorter: true,
     },
     {
       title: 'score',
       dataIndex: 'score',
-      sorter: {
-        compare: (a, b) => a.score - b.score,
-        multiple: 1,
-      },
-    },
-    {
-      title: 'edit',
-      dataIndex: 'edit',
-      render: tag => (
-                <Tag color={'geekblue'} onClick={()=>setUpdateTask(true)} key={tag}>
-                  {tag}
-                </Tag>
-        ),
+      sorter: (a, b) => a.score - b.score,
     },
   ];
 
-  const datas = tasksAuthor.map( (el, i) => {
-    const scr = el.items.map(el => el.maxScore).reduce((a,b) => a + b);
-    return{
-      key : `${el.author}${i}`,
-      task : el.id,
-      author : el.author,
-      state: el.state,
-      score: scr,
-      edit: 'edit',
-    }
-  })
+  const onRowClickHandler = useCallback((record, rowIndex) => {
+    setTaskId(record.id);
+    setUpdateTask(true);
+    console.log('hello', record.id, ' / ', rowIndex);
+  });
 
   return <>
-    <Table columns={columns} bordered dataSource={datas} onClick={(record, rowIndex)=>console.log(record)} />
+    <TableComponent filter={{ author: author }} columns={columns} url={path} maxRows={MAX_ROWS} onClick={onRowClickHandler} /> 
     <button onClick={()=>setCreateNewTask(true)}>Create task</button>
   </>
 }
