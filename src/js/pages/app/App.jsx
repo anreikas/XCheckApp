@@ -22,7 +22,7 @@ const App = () => {
     }
   })
 
-  if(false /*!isAuthenticated*/) return <Login loginWithRedirect={loginWithRedirect}
+  if(!isAuthenticated) return <Login loginWithRedirect={loginWithRedirect}
                                      isAuthenticated={isAuthenticated}
                                      role={role}
                                      setRole={setRole}

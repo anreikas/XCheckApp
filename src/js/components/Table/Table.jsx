@@ -76,6 +76,8 @@ const TableComponent = ({
         sorterMethod = (a, b) => (a[dataIndex] > b[dataIndex] ? 1 : -1);
       }
 
+      console.log(sorterMethod)
+
       return {
         filterDropdown: ({
           setSelectedKeys, selectedKeys, confirm, clearFilters,
@@ -134,6 +136,7 @@ const TableComponent = ({
     },
     [searchState],
   );
+
   useEffect(() => {
     const columnsWithProps = Columns.map((column) => {
       const { searched } = column;
@@ -204,5 +207,4 @@ TableComponent.defaultProps = {
 };
 
 export default TableComponent;
-
 
