@@ -43,12 +43,16 @@ const AuthorTable = ({ setCreateNewTask, author, setUpdateTask,setTaskId}) => {
   const onRowClickHandler = useCallback((record, rowIndex) => {
     setTaskId(record.id);
     setUpdateTask(true);
+    setCreateNewTask(false);
     console.log('hello', record.id, ' / ', rowIndex);
   });
 
   return <>
     <TableComponent filter={{ author: author }} columns={columns} url={path} maxRows={MAX_ROWS} onClick={onRowClickHandler} /> 
-    <button onClick={()=>setCreateNewTask(true)}>Create task</button>
+    <button onClick={()=>{
+      setCreateNewTask(true);
+      setUpdateTask(false);
+    }}>Create task</button>
   </>
 }
 
