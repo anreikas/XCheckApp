@@ -119,7 +119,6 @@ export const FetchReq = async (url, method = 'GET', data) => {
 };
 
 export const TextSorter = (a, b) => {
-  console.log( '@TextSorter : ', a, b );
   const nameA = a.author.toLowerCase();
   const nameB = b.author.toLowerCase();
 

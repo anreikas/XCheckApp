@@ -76,8 +76,6 @@ const TableComponent = ({
         sorterMethod = (a, b) => (a[dataIndex] > b[dataIndex] ? 1 : -1);
       }
 
-      console.log(sorterMethod)
-
       return {
         filterDropdown: ({
           setSelectedKeys, selectedKeys, confirm, clearFilters,
