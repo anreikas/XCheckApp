@@ -14,7 +14,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 
 const App = () => {
   const { loginWithRedirect, user, isAuthenticated } = useAuth0();
-  
+
   const [role, setRole] = useState('Student');
 
   useEffect(() => {
@@ -22,8 +22,8 @@ const App = () => {
       setRole(localStorage.getItem('role'));
     }
   })
-  
-  if(!isAuthenticated) return <Login loginWithRedirect={loginWithRedirect} 
+
+  if(!isAuthenticated) return <Login loginWithRedirect={loginWithRedirect}
                                      isAuthenticated={isAuthenticated}
                                      role={role}
                                      setRole={setRole}
