@@ -8,7 +8,7 @@ import {
   Table, Space, Input, Button,
 } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { FetchReq, UrlConstructor, TextSorter } from '../../utils';
+import { FetchReq, UrlConstructor } from '../../utils';
 
 const MAX_ROWS = 5;
 const START_PAGE = 1;
@@ -75,8 +75,6 @@ const TableComponent = ({
       } else if (typeof sorter === 'boolean' && sorter) {
         sorterMethod = (a, b) => (a[dataIndex] > b[dataIndex] ? 1 : -1);
       }
-
-      console.log(sorterMethod)
 
       return {
         filterDropdown: ({
