@@ -59,7 +59,7 @@ const Reviews = () => {
       <TableComponent
         columns={Columns}
         url={path}
-        filter={{ author: 'rgovin' }}
+        // filter={{ author: 'rgovin' }}
         maxRows={MAX_ROWS}
         onClick={onRowClickHandler}
       />
