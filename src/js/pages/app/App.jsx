@@ -28,6 +28,7 @@ const App = () => {
                   setRole={setRole}
                   user={user}/>;
   }
+
   return (
     <div className='app'>
       <Header isAuthenticated={isAuthenticated} />

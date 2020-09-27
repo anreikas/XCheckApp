@@ -88,8 +88,8 @@ export default function App() {
   });
 
   const tableDisplay = {
-    display: showTable ? 'block' : 'none'
-  }
+    display: showTable ? 'block' : 'none',
+  };
 
   useEffect(() => {
     getTasks(setTasks);

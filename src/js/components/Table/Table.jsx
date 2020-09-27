@@ -33,6 +33,10 @@ const TableComponent = ({
   const [Columns, setColumns] = useState(columns);
   const [dataSource, setDataSource] = useState([]);
   const [pageNumber, setPageNumber] = useState(START_PAGE);
+<<<<<<< HEAD
+=======
+  const [updated, setUpdated] = useState( update );
+>>>>>>> 0121f369111ed994074ed8a97651d15a5be9a0de
   const handleReset = useCallback((clearFilters) => {
     clearFilters();
 
@@ -175,7 +179,11 @@ const TableComponent = ({
     if (update) {
       showData();
     }
+<<<<<<< HEAD
   }, [update]);
+=======
+  }, [update])
+>>>>>>> 0121f369111ed994074ed8a97651d15a5be9a0de
 
   useEffect(() => {
     const columnsWithProps = Columns.map((column) => {
@@ -233,6 +241,10 @@ const TableComponent = ({
     </>
   );
 };
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0121f369111ed994074ed8a97651d15a5be9a0de
 TableComponent.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string,
@@ -248,10 +260,18 @@ TableComponent.propTypes = {
   maxRows: PropTypes.number,
   onClick: PropTypes.func,
 };
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0121f369111ed994074ed8a97651d15a5be9a0de
 TableComponent.defaultProps = {
   columns: [],
   url: '',
   maxRows: MAX_ROWS,
   onClick: () => {},
 };
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0121f369111ed994074ed8a97651d15a5be9a0de
 export default TableComponent;
