@@ -132,7 +132,7 @@ const reviewRequest = {
 
 const review = [{
   id: 'rev-id-1',
-  requestId1: 'rev-req-1',
+  requestId: 'rev-req-1',
   author: 'nikolay',
   state: 'PUBLISHED', // enum [DRAFT, PUBLISHED, DISPUTED, ACCEPTED, REJECTED],
   grade: taskScore,
@@ -160,36 +160,6 @@ const dispute = {
   comment: "Check out the 'All things' page to see all things that were implemented",
   suggestedScore: 30,
 };
-
-// const reviewTable = [{
-//         name: 'Song-bird',
-//         deadline: 'december 10, 2020',
-//         author: 'Nikolay',
-//         status: 'done',
-//         score: 10,
-//     },
-//     {
-//         name: 'Song-bird',
-//         deadline: 'december 10, 2020',
-//         author: 'Sasha',
-//         status: 'pending',
-//         score: 100,
-//     },
-//     {
-//         name: 'Song-bird',
-//         deadline: 'december 10, 2020',
-//         author: 'Boris',
-//         status: 'done',
-//         score: 50,
-//     },
-//     {
-//         name: 'Song-bird',
-//         deadline: 'december 10, 2020',
-//         author: 'Andrey',
-//         status: 'pending',
-//         score: 80,
-//     }
-// ]
 
 export {
   user,

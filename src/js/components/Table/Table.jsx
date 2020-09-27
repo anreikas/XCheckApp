@@ -41,6 +41,7 @@ const TableComponent = ({
     };
     confirm();
   });
+
   const getData = useCallback(async (page) => {
     const reqUrl = UrlConstructor(url, { _page: page, _limit: maxRows, ...filter });
 
@@ -85,6 +86,7 @@ const TableComponent = ({
   const getColumnSearchProps = useCallback(
     ({ dataIndex, sorter }) => {
       let sorterMethod = false;
+
 
       if (typeof sorter === 'function' || typeof sorter === 'object') {
         sorterMethod = sorter;
