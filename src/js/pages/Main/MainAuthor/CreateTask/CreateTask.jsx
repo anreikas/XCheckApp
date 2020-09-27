@@ -53,6 +53,9 @@ const CreateTask = ({ setUpdateTask,
     setUpdateTask(false);
     setCreateNewTask(false);
   }
+  const addItem = (str) => {
+    setNtask({...nTask, items: [...nTask.items, {id: `${str.split(' ').join('').toLowerCase()}${Date.now()}`, minScore: '', maxScore: '', category: str, title: '', description: ''}] })
+  }
   return (
     <div className='manager'>
       <button onClick={closeCreateTask}>close</button>
@@ -86,6 +89,7 @@ const CreateTask = ({ setUpdateTask,
                                     nTask={nTask}
                                     setNtask={setNtask}
                                     id={el.id} />)}
+              <button onClick={() => addItem('Basic Scope')}>add</button>
           </div>
           <div className='form-item'>
             <h4>Extra Scope</h4>
@@ -99,6 +103,7 @@ const CreateTask = ({ setUpdateTask,
                                     nTask={nTask}
                                     setNtask={setNtask}
                                     id={el.id} />)}
+            <button onClick={() => addItem('Extra Scope')}>add</button>
           </div>
           <div className='form-item'>
             <h4>Fines</h4>
@@ -112,6 +117,7 @@ const CreateTask = ({ setUpdateTask,
                                     nTask={nTask}
                                     setNtask={setNtask}
                                     id={el.id} />)}
+            <button onClick={() => addItem('Fines')}>add</button>
           </div>
         </div>
       </div>
