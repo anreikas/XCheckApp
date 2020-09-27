@@ -14,7 +14,14 @@ const MAX_ROWS = 5;
 const START_PAGE = 1;
 
 const TableComponent = ({
-  columns, url, maxRows = MAX_ROWS, onClick, filter = {}, title = null,
+  columns,
+  url,
+  maxRows = MAX_ROWS,
+  onClick,
+  filter = {},
+  title = null,
+  update,
+  onUpdate,
 }) => {
   const searchInput = useRef(null);
   const searchState = useRef({
@@ -26,6 +33,7 @@ const TableComponent = ({
   const [Columns, setColumns] = useState(columns);
   const [dataSource, setDataSource] = useState([]);
   const [pageNumber, setPageNumber] = useState(START_PAGE);
+  const [updated, setUpdated] = useState( update );
   const handleReset = useCallback((clearFilters) => {
     clearFilters();
 
@@ -67,7 +75,6 @@ const TableComponent = ({
     const mappedColumns = Columns.filter(({ map }) => typeof map === 'function');
 
     if (mappedColumns.length) {
-      console.log( '@ : mappedData',  mappedColumns);
       data = data.map((el) => {
         const mappedData = {};
         mappedColumns.forEach(({ dataIndex, map }) => {
@@ -86,7 +93,6 @@ const TableComponent = ({
   const getColumnSearchProps = useCallback(
     ({ dataIndex, sorter }) => {
       let sorterMethod = false;
-
 
       if (typeof sorter === 'function' || typeof sorter === 'object') {
         sorterMethod = sorter;
@@ -126,8 +132,7 @@ const TableComponent = ({
             </Space>
           </div>
         ),
-        filterIcon: (filtered) => <SearchOutlined
-          style={{ color: filtered ? '#1890ff' : undefined }}/>,
+        filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }}/>,
         onFilter: (value, record) => (record[dataIndex]
           ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
           : ''),
@@ -154,6 +159,25 @@ const TableComponent = ({
     [searchState],
   );
 
+  const showData = useCallback(async () => {
+    setLoading(true);
+    const data = await getData(pageNumber);
+
+    setDataSource(data);
+    setTimeout(() => {
+      setLoading(false);
+      if (typeof onUpdate === 'function') {
+        onUpdate();
+      }
+    }, 200);
+  }, [pageNumber]);
+
+  useEffect(() => {
+    if (update) {
+      showData();
+    }
+  }, [update])
+
   useEffect(() => {
     const columnsWithProps = Columns.map((column) => {
       const { searched } = column;
@@ -173,13 +197,13 @@ const TableComponent = ({
   }, []);
 
   useEffect(() => {
-    const showData = async () => {
-      setLoading(true);
-      const data = await getData(pageNumber);
-
-      setDataSource(data);
-      setTimeout(setLoading.bind(false), 200);
-    };
+    // const showData = async () => {
+    //   setLoading(true);
+    //   const data = await getData(pageNumber);
+    //
+    //   setDataSource(data);
+    //   setTimeout(setLoading.bind(false), 200);
+    // };
 
     showData();
   }, [pageNumber]);

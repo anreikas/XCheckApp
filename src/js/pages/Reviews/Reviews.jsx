@@ -3,19 +3,19 @@ import React, {
 } from 'react';
 import TableComponent from '../../components/Table';
 import { UrlPath } from '../../utils';
-import { SERVER_URL } from '../../constants';
-
+import { SERVER_URL, REQUESTS_TABLE_TYPES } from '../../constants';
+import TaskCheck from '../Requests/src/task-check/index.js';
 import './Reviews.scss';
 import './styles.scss';
 
-const MAX_ROWS = 3;
+const MAX_ROWS = 50;
 const path = UrlPath(SERVER_URL, 'reviews');
 
 const Reviews = () => {
   const Columns = [
     {
       title: 'Task-Name',
-      dataIndex: 'id',
+      dataIndex: 'task',
       width: '30%',
       editable: true,
       searched: true,
@@ -47,22 +47,32 @@ const Reviews = () => {
     },
   ];
   const onRowClickHandler = useCallback((record, rowIndex) => console.log('hello', record, ' / ', rowIndex));
-
+  const [taskCheck, setTaskCheck] = useState(null);
+  const handleClose = () => {
+    setTaskCheck(null);
+  };
+  const showTaskCheck = useCallback((review) => {
+    setTaskCheck(
+      <TaskCheck
+        show={true}
+        type={REQUESTS_TABLE_TYPES.PUBLISHED_REVIEWS}
+        handleClose={handleClose}
+        request={review}
+      />,
+    );
+  }, []);
   return (
     <>
-      <TableComponent
-        columns={Columns}
-        url={UrlPath(SERVER_URL, 'tasks')}
-        maxRows={MAX_ROWS}
-        onClick={onRowClickHandler}
-      />
       <TableComponent
         columns={Columns}
         url={path}
         // filter={{ author: 'rgovin' }}
         maxRows={MAX_ROWS}
-        onClick={onRowClickHandler}
+        onClick={showTaskCheck}
       />
+      <div className="container">
+        {taskCheck}
+      </div>
     </>
   );
 };

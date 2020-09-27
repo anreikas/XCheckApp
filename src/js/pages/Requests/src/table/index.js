@@ -5,11 +5,11 @@ import Table from '../../../../components/Table';
 import { UrlPath } from '../../../../utils';
 import { SERVER_URL } from '../../../../constants';
 
-const MAX_ROWS = 30;
+const MAX_ROWS = 50;
 const columns = [
   {
     title: 'task',
-    dataIndex: 'id',
+    dataIndex: 'task',
     searched: true,
     sorter: true,
   },
@@ -50,7 +50,7 @@ const columns = [
   },
 ];
 
-export default ({ onClick, filter, title }) => (
+export default ({ onClick, filter, title, update, onUpdate }) => (
   <Table
     title={title}
     onClick={onClick}
@@ -58,5 +58,7 @@ export default ({ onClick, filter, title }) => (
     url={UrlPath(SERVER_URL, 'reviewRequests')}
     maxRows={MAX_ROWS}
     filter={filter}
+    update={update}
+    onUpdate={onUpdate}
   />
 );

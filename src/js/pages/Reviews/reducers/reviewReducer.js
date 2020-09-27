@@ -20,7 +20,6 @@ const initialState = [
 export default (state = initialState, action) => {
   const { data } = action;
 
-  console.log('@ : action ', action);
   switch (action.type) {
     case SET_STATE:
       return data;

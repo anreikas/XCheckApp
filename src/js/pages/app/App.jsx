@@ -18,17 +18,16 @@ const App = () => {
   const [role, setRole] = useState('Student');
 
   useEffect(() => {
-    if(localStorage.getItem('role')) {
+    if (localStorage.getItem('role')) {
       setRole(localStorage.getItem('role'));
     }
   })
 
-  if(!isAuthenticated) return <Login loginWithRedirect={loginWithRedirect}
+  if (false /*!isAuthenticated*/) return <Login loginWithRedirect={loginWithRedirect}
                                      isAuthenticated={isAuthenticated}
                                      role={role}
                                      setRole={setRole}
                                      user={user} />
-  console.log(role);
   return (
     <div className='app'>
       <Header isAuthenticated={isAuthenticated} />
