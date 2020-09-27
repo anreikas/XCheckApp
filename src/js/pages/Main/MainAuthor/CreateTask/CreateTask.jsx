@@ -9,14 +9,25 @@ const CreateTask = ({ setUpdateTask,
                       updateTask,
                       tasksAuthor,
                       author,
+<<<<<<< HEAD
                       tasks}) => {
   const task = updateTask
   ?JSON.parse(JSON.stringify(tasksAuthor))[0]
+=======
+                      tasks,
+                      taskId}) => {
+  const task = updateTask
+  ?JSON.parse(JSON.stringify(tasksAuthor)).find(el=> el.id === taskId)
+>>>>>>> 672e8c55492ac18c04f9bc265fde009971d90ed3
   :{
     id: "",
     author: author,
     state: "DRAFT", // enum [DRAFT, PUBLISHED, ARCHIVED]
     categoriesOrder: ["Basic Scope", "Extra Scope", "Fines"],
+<<<<<<< HEAD
+=======
+    score: '',
+>>>>>>> 672e8c55492ac18c04f9bc265fde009971d90ed3
     items: [
       {
         id: "basic_p1",
@@ -51,6 +62,12 @@ const CreateTask = ({ setUpdateTask,
     setUpdateTask(false);
     setCreateNewTask(false);
   }
+<<<<<<< HEAD
+=======
+  const addItem = (str) => {
+    setNtask({...nTask, items: [...nTask.items, {id: `${str.split(' ').join('').toLowerCase()}${Date.now()}`, minScore: '', maxScore: '', category: str, title: '', description: ''}] })
+  }
+>>>>>>> 672e8c55492ac18c04f9bc265fde009971d90ed3
   return (
     <div className='manager'>
       <button onClick={closeCreateTask}>close</button>
@@ -64,12 +81,17 @@ const CreateTask = ({ setUpdateTask,
         </label><br/>
         <label>
           <div>state:</div>
+<<<<<<< HEAD
           <select onChange={e=>setNtask({...nTask, state: e.target.value})}>
+=======
+          <select onChange={e=>setNtask({...nTask, state: e.target.value})} value={nTask.state}>
+>>>>>>> 672e8c55492ac18c04f9bc265fde009971d90ed3
             <option value="DRAFT">DRAFT</option>
             <option value="PUBLISHED">PUBLISHED</option>
             <option value="ARCHIVED">ARCHIVED</option>
           </select>
         </label>
+<<<<<<< HEAD
         <div className='form-item'>
             {nTask.items.map((el, item) => <FormItemTask key={el.id}
                                              category={el.category}
@@ -81,6 +103,52 @@ const CreateTask = ({ setUpdateTask,
                                              setNtask={setNtask}
                                              el={el}
                                              item={item} />)}
+=======
+
+        <div className='form-items'>
+          <div className='form-item'>
+            <h4>Basic Scope</h4>
+            {nTask.items.map((el)=> el.category === 'Basic Scope'
+                                    && <FormItemTask key={el.id}
+                                    category={el.category}
+                                    title={el.title}
+                                    minscore={el.minScore}
+                                    maxscore={el.maxScore}
+                                    description={el.description}
+                                    nTask={nTask}
+                                    setNtask={setNtask}
+                                    id={el.id} />)}
+              <button onClick={() => addItem('Basic Scope')}>add</button>
+          </div>
+          <div className='form-item'>
+            <h4>Extra Scope</h4>
+            {nTask.items.map((el)=> el.category === 'Extra Scope'
+                                    && <FormItemTask key={el.id}
+                                    category={el.category}
+                                    title={el.title}
+                                    minscore={el.minScore}
+                                    maxscore={el.maxScore}
+                                    description={el.description}
+                                    nTask={nTask}
+                                    setNtask={setNtask}
+                                    id={el.id} />)}
+            <button onClick={() => addItem('Extra Scope')}>add</button>
+          </div>
+          <div className='form-item'>
+            <h4>Fines</h4>
+            {nTask.items.map((el)=> el.category === 'Fines'
+                                    && <FormItemTask key={el.id}
+                                    category={el.category}
+                                    title={el.title}
+                                    minscore={el.minScore}
+                                    maxscore={el.maxScore}
+                                    description={el.description}
+                                    nTask={nTask}
+                                    setNtask={setNtask}
+                                    id={el.id} />)}
+            <button onClick={() => addItem('Fines')}>add</button>
+          </div>
+>>>>>>> 672e8c55492ac18c04f9bc265fde009971d90ed3
         </div>
       </div>
 

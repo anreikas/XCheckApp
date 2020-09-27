@@ -9,9 +9,6 @@ const Navbar = () => {
         <NavLink to="/tasks" activeClassName='nav__item-active'>tasks</NavLink>
       </div>
       <div className='nav__item'>
-        <NavLink to="/management" activeClassName='nav__item-active'>task manager</NavLink>
-      </div>
-      <div className='nav__item'>
         <NavLink to="/requests" activeClassName='nav__item-active'>requests</NavLink>
       </div>
       <div className='nav__item'>

@@ -7,11 +7,19 @@ import CreateTask from './CreateTask/CreateTask';
 
 const MainAuthor = ({author}) => {
 
+<<<<<<< HEAD
+=======
+  const [createNewTask, setCreateNewTask] = useState(false);
+  const [updateTask, setUpdateTask] = useState(false);
+  const [taskId, setTaskId] = useState('');
+
+>>>>>>> 672e8c55492ac18c04f9bc265fde009971d90ed3
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getTasksAuthor(author));
   }, [getTasksAuthor]);
   const { tasksAuthor, tasks } = useSelector((state) => state.tasksAuthorReducer);
+<<<<<<< HEAD
   console.log(tasksAuthor);
   console.log(tasks);
 
@@ -87,6 +95,8 @@ const MainAuthor = ({author}) => {
   //     ]
   //   }
   // ]
+=======
+>>>>>>> 672e8c55492ac18c04f9bc265fde009971d90ed3
 
   return (
     createNewTask || updateTask
@@ -96,11 +106,21 @@ const MainAuthor = ({author}) => {
                   tasksAuthor={tasksAuthor}
                   tasks={tasks}
                   setCreateNewTask={setCreateNewTask}
+<<<<<<< HEAD
                   setUpdateTask={setUpdateTask} />)
     :(<AuthorTable tasksAuthor={tasksAuthor}
                    setCreateNewTask={setCreateNewTask}
                    setUpdateTask={setUpdateTask}
                    author={author} />)
+=======
+                  setUpdateTask={setUpdateTask}
+                  taskId={taskId} />)
+    :(<AuthorTable tasksAuthor={tasksAuthor}
+                   setCreateNewTask={setCreateNewTask}
+                   setUpdateTask={setUpdateTask}
+                   author={author}
+                   setTaskId={setTaskId} />)
+>>>>>>> 672e8c55492ac18c04f9bc265fde009971d90ed3
    
   )
 }

@@ -4,7 +4,6 @@ import './App.scss';
 import Header from '../Header/Header';
 import Navbar from '../Navbar/Navbar';
 import Tasks from '../Tasks/Tasks';
-import TaskManager from '../TaskManager/TaskManager';
 import Requests from '../Requests/Requests';
 import { Route } from 'react-router-dom';
 import Main from '../Main/Main';
@@ -36,7 +35,6 @@ const App = () => {
       <div className='app-content'>
         <Route exact path='/' render={() => <Main isAuthenticated={isAuthenticated} user={user} role={role} /> }/>
         <Route path='/tasks' render={() => <Tasks /> }/>
-        <Route path='/management' render={() => <TaskManager /> }/>
         <Route path='/requests' render={() => <Requests user={user} /> }/>
         <Route path='/reviews' render={() => <Reviews /> }/>
       </div>
