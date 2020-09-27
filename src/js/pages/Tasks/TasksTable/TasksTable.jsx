@@ -30,7 +30,6 @@ const TasksTable = ({tasks, setShowDescription, setShowId}) => {
   return (
     <div className='tasks'>
       <table className='tasks__table'>
-        <caption className='tasks__table-caption'>TASKS</caption>
         <thead className='tasks__table__header'>
           <TableHead setDataTable={setDataTable} tasks={tasks} />
         </thead>
