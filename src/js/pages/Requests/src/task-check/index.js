@@ -3,7 +3,12 @@ import {Form,Button,Modal,Alert} from 'react-bootstrap'
 import Range from './range/index'
 
 
-export default ({show,handleClose,task}) => {
+  const {items, category} = task;
+
+  const reset = () => {
+    setScore(0);
+    setIsReset(true);
+  };
 
     const [score, setScore] = useState(0)
     const [isReset, setIsReset] = useState(false)
