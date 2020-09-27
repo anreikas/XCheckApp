@@ -1,0 +1,19 @@
+.sort-control {
+  display: inline-block;
+  font-weight: normal;
+  font-size: 0;
+  width: 20px;
+  text-align: center;
+  right: 5px;
+  cursor: pointer;
+  margin-left: 5px;
+
+  & > * {
+    line-height: 1;
+    font-size: .7rem;
+    color: #bfbfbf;
+  }
+}
+.sort-control-active {
+ color: #3ea3ff;
+}
