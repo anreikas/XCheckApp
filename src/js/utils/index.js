@@ -29,11 +29,11 @@ export const usersAPI = {
     const response = await instance.put(`users/${id}`, { id, githubId, roles });
     return response.data;
   },
-}
+};
 
 export const reviewRequests = {
   async getRequests() {
-    const response = await instance.get(`reviewRequests`);
+    const response = await instance.get('reviewRequests');
     const data = await response.data;
     return data;
   },
@@ -44,6 +44,11 @@ export const reviewRequests = {
   },
   async postRequest(obj) {
     const response = await instance.post('reviewRequests', obj);
+    const data = await response.data;
+    return data;
+  },
+  async getRequestByTaskId(taskId, author) {
+    const response = await instance.get(`reviewRequests?task=${taskId} ${author ? `&author=${author}` : ''}`);
     const data = await response.data;
     return data;
   },

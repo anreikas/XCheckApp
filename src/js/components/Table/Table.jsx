@@ -14,7 +14,7 @@ const MAX_ROWS = 5;
 const START_PAGE = 1;
 
 const TableComponent = ({
-  columns, url, maxRows = MAX_ROWS, onClick, filter = {},
+  columns, url, maxRows = MAX_ROWS, onClick, filter = {}, title = null,
 }) => {
   const searchInput = useRef(null);
   const searchState = useRef({
@@ -186,6 +186,7 @@ const TableComponent = ({
     <>
       <Table
         bordered
+        title={title}
         dataSource={dataSource}
         columns={Columns}
         loading={loading}
