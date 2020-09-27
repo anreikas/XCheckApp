@@ -3,8 +3,8 @@ import {
   Form, Button, Modal, Alert,
 } from 'react-bootstrap';
 import Range from '../range/index';
-import { REQUESTS_TABLE_TYPES } from '../../../../constants';
-import { getTasks, getTaskById, createCheckForm } from '../actions';
+import { REQUESTS_TABLE_TYPES, STATES } from '../../../../constants';
+import { createCheckForm, sendRequest, sendReview } from '../actions';
 // import Form from '../form';
 
 const ACTIONS = {
@@ -12,13 +12,14 @@ const ACTIONS = {
   SEND: 'SEND',
 };
 
-export default ({
-  request, type, show, handleClose, save, send,
+const TaskCheck = ({
+  request, type, show, handleClose, onSend,
 }) => {
   const [checkFormData, setCheckFormData] = useState({});
   const [checkForm, setCheckForm] = useState(null);
   const [score, setScore] = useState(0);
   const [isReset, setIsReset] = useState(false);
+  const [scoreText, setScoreText] = useState('score');
   // const { items, category } = task;
   const reset = () => {
     const newFormData = { ...checkFormData };
@@ -33,54 +34,70 @@ export default ({
     setIsReset(true);
   };
 
-    const [score, setScore] = useState(0)
-    const [isReset, setIsReset] = useState(false)
-
-  const action = useCallback((actionType) => {
+  const close = () => {
+    setScore(0);
+    handleClose();
+  };
+  const getGrade = useCallback(() => {
     const { author, id: requestId, task } = request;
     const { items: formItems } = checkFormData;
-    const selfGrade = {
-      id: `${request.id}-self-grade-${Date.now()}`,
+
+    return {
+      id: `${requestId}-self-grade-${Date.now()}`,
       author,
       requestId,
       task,
-      // items: formItems.
-    };
+      items: Object.fromEntries(formItems.map((formItem) => {
+        const { id, selfScore, comment = '' } = formItem;
 
-    /*
-    * "items": {
-        "basic_p1": {
-          "score": 20,
-          "comment": "Well done!"
-        },
-        "extra_p1": {
-          "score": 15,CheckForm
-          "comment": "Some things are done, some are not"
-        },
-        "fines_p1": {
-          "score": 10,
-          "comment": "No ticket today"
-        },
-        "fines_p2": {
-          "score": 20,
-          "comment": "No ticket today"
-        }
-    *
-    * */
+        return [id, { score: selfScore, comment }];
+      })),
+    };
+  }, [request, checkFormData]);
+
+  const action = useCallback((actionType) => {
+    const { author, id: requestId, task } = request;
+    const grade = getGrade();
+
+    let state = '';
+
     switch (actionType) {
       case ACTIONS.SAVE:
-        save(request, checkFormData);
+        state = STATES.DRAFT;
         break;
       case ACTIONS.SEND:
-        send(request, checkFormData);
+        state = STATES.PUBLISHED;
         break;
       default:
     }
 
-    setScore(0);
+    if (type === REQUESTS_TABLE_TYPES.DRAFTED_REQUESTS) {
+      sendRequest({
+        ...request,
+        selfGrade: grade,
+        state,
+      }, onSend);
+    } else if (type === REQUESTS_TABLE_TYPES.PUBLISHED_REQUESTS) {
+      sendReview({
+        author,
+        requestId,
+        grade,
+        state,
+        task,
+      });
+    }
+
     handleClose();
   });
+  const onCommentChange = useCallback((id, { target: { value } }) => {
+    const newFormData = { ...checkFormData };
+    const { items } = newFormData;
+    const item = items.find((el) => el.id === id);
 
+    item.comment = value;
+
+    setCheckFormData(newFormData);
+  });
   const changeScore = useCallback((id, value) => {
     const newFormData = { ...checkFormData };
     const { items } = newFormData;
@@ -96,7 +113,14 @@ export default ({
   }
 
   useEffect(() => {
-    createCheckForm(request, setCheckFormData);
+    if (type === REQUESTS_TABLE_TYPES.PUBLISHED_REVIEWS) {
+      createCheckForm({
+        ...request,
+        selfGrade: request.grade,
+      }, setCheckFormData);
+    } else {
+      createCheckForm(request, setCheckFormData);
+    }
   }, [request]);
 
   useEffect(() => {
@@ -115,24 +139,45 @@ export default ({
                 items
                   .filter((item) => item.category === el)
                   .map(({
-                    id, minScore, maxScore, title, description, selfScore, reviews,
+                    id, minScore, maxScore, title, description, selfScore, comment,
                   }, i) => (
                       <Alert variant='warning' key={i}>
-                        <h3>{title}</h3>
-                        <p>Балл за выполнение: {maxScore}</p>
-                        <p>{description}</p>
+                        <div className="d-flex justify-content-between align-items-center">
+                          <div>
+                            <h3>{title}</h3>
+                            <p>Максимальный балл: {maxScore}</p>
+                            <p>{description}</p>
+                          </div>
+                          <div className="d-flex align-items-center">
+                            <span className="my-0 mx-2">{scoreText}: </span>
+                            <h3>{selfScore}</h3>
+                          </div>
+                        </div>
                         {
-                          type === REQUESTS_TABLE_TYPES.DRAFTED_REQUESTS
+                          type !== REQUESTS_TABLE_TYPES.PUBLISHED_REVIEWS
+                            ? (<Range
+                              isReset={isReset}
+                              resetCallBack={res}
+                              min={minScore}
+                              max={maxScore}
+                              onChange={changeScore.bind(null, id)}
+                              value={selfScore}
+                            />)
+                            : null
+                        }
+                        {
+                          type === REQUESTS_TABLE_TYPES.PUBLISHED_REQUESTS
                             ? (
-                              <Range
-                                isReset={isReset}
-                                resetCallBack={res}
-                                min={minScore}
-                                max={maxScore}
-                                onChange={changeScore.bind(null, id)}
-                                value={selfScore}
-                              />
+                              <div className="form-item-comment">
+                                <Form.Label>Comment</Form.Label>
+                                <Form.Control type="text" placeholder="comment" onChange={onCommentChange.bind(null, id)}/>
+                              </div>
                             )
+                            : null
+                        }
+                        {
+                          type === REQUESTS_TABLE_TYPES.PUBLISHED_REVIEWS
+                            ? <p>Comment: {comment}</p>
                             : null
                         }
                       </Alert>
@@ -142,17 +187,20 @@ export default ({
           ))}
       </Form>,
       );
+
+      switch (type) {
+        case REQUESTS_TABLE_TYPES.PUBLISHED_REQUESTS:
+          setScoreText('Yours');
+          break;
+        case REQUESTS_TABLE_TYPES.DRAFTED_REQUESTS:
+          setScoreText('Self');
+          break;
+        default:
+          setScoreText('Score');
+      }
     }
   }, [checkFormData]);
 
-  /* <Form
-    categoriesOrder={checkFormData.categoriesOrder}
-    items={checkFormData.items}
-    range={type === REQUESTS_TABLE_TYPES.DRAFTED_REQUESTS}
-    isReset={isReset}
-    resetCallBack={res}
-    onChange={changeScore}
-  /> */
   return (
     <Modal show={show} onHide={close} size={'xl'}>
       <Modal.Header closeButton>
@@ -160,9 +208,13 @@ export default ({
           <div className='d-flex justify-content-between align-items-center'>
             <p className="my-0">{checkFormData.taskId}</p>
             <div className='d-flex align-items-center'>
-              <Button variant="secondary" onClick={reset}>
-                Reset
-              </Button>
+              {
+                type !== REQUESTS_TABLE_TYPES.PUBLISHED_REVIEWS
+                  ? (<Button variant="secondary" onClick={reset}>
+                    Reset
+                  </Button>)
+                  : null
+              }
               <p className="my-0 mx-2">Score: {score}</p>
             </div>
           </div>
@@ -172,13 +224,23 @@ export default ({
         {checkForm}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={action.bind(null, ACTIONS.SAVE)}>
-          Сохранить
-        </Button>
-        <Button variant="primary" onClick={action.bind(null, ACTIONS.SEND)}>
-          Отправить результат
-        </Button>
+        {
+          type === REQUESTS_TABLE_TYPES.DRAFTED_REQUESTS
+            ? (<Button variant="secondary" onClick={action.bind(null, ACTIONS.SAVE)}>
+              Сохранить
+            </Button>)
+            : null
+        }
+        {
+          type !== REQUESTS_TABLE_TYPES.PUBLISHED_REVIEWS
+            ? (<Button variant="primary" onClick={action.bind(null, ACTIONS.SEND)}>
+              Отправить результат
+            </Button>)
+            : null
+        }
       </Modal.Footer>
     </Modal>
   );
 };
+
+export default TaskCheck;

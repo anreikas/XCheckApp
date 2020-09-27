@@ -2,11 +2,37 @@ import React from 'react'
 import {review} from '../data.js'
 import { Table,Tag } from 'antd';
 
-// export default () => {
-//     return(
-//         <div>hi</div>
-//     )
-// }
+const MAX_ROWS = 50;
+const columns = [
+  {
+    title: 'task',
+    dataIndex: 'task',
+    searched: true,
+    sorter: true,
+  },
+  {
+    title: 'author',
+    dataIndex: 'author',
+    searched: true,
+    sorter: true,
+  },
+  {
+    title: 'state',
+    dataIndex: 'state',
+    render: (tag) => (
+      <Tag color={'geekblue'} key={tag}>
+        {tag}
+      </Tag>
+    ),
+    sorter: true,
+  },
+  {
+    title: 'score',
+    dataIndex: 'score',
+    sorter: true,
+    map: ((record) => {
+      const { selfGrade = {} } = record;
+      const { items } = selfGrade;
 
 const columns = [
     {
@@ -55,7 +81,7 @@ const columns = [
 
 
 
-export default ({ onClick, filter, title }) => (
+export default ({ onClick, filter, title, update, onUpdate }) => (
   <Table
     title={title}
     onClick={onClick}
@@ -63,5 +89,7 @@ export default ({ onClick, filter, title }) => (
     url={UrlPath(SERVER_URL, 'reviewRequests')}
     maxRows={MAX_ROWS}
     filter={filter}
+    update={update}
+    onUpdate={onUpdate}
   />
 );

@@ -21,16 +21,48 @@ export const getTaskById = async (taskId, dispatch) => {
   return task;
 };
 
-export const sendRequest = async (request, dispatch) => {
-  const result = await reviewRequests.postRequest(request);
+/*
+* {
+    "id": "rev-id-1",
+    "requestId": "rev-req-1",
+    "author": "ButterBrot777",
+    "state": "DISPUTED",
+    "grade": {}
+  }
+* */
 
-  dispatch(result);
+export const sendReview = async (review) => {
+  const { requestId } = review;
+  const data = await reviewRequests.postReview({
+    ...review,
+    id: `req-${requestId}-rev-${Date.now()}`,
+  });
+
+  return data;
 };
 
-export const sendReview = async (taskId, dispatch) => {
-  const task = await reviewRequests.getTask(taskId);
+export const sendRequest = async (request, dispatch) => {
+  const { id } = request;
+  let existRequest;
+  let result = null;
 
-  dispatch(task);
+  try {
+    existRequest = await reviewRequests.getRequestById(id);
+  } catch (e) {
+    existRequest = null;
+  }
+
+  if (existRequest) {
+    result = await reviewRequests.updateRequest(request);
+  } else {
+    result = await reviewRequests.postRequest(request);
+  }
+
+  if (typeof dispatch === 'function') {
+    dispatch(result);
+  }
+
+  return result;
 };
 
 /*
@@ -141,6 +173,7 @@ items: [
     "title": "Basic things",
     "description": "You need to make things right, not wrong",
     "selfScore": 20,
+    "reviewScore": 20,
     "reviews": [
       {
         "score": 20,
@@ -150,12 +183,32 @@ items: [
   }
 ],
 */
+/*
+* "items": {
+    "basic_p1": {
+      "score": 20,
+      "comment": "Well done!"
+    },
+    "extra_p1": {
+      "score": 15,CheckForm
+      "comment": "Some things are done, some are not"
+    },
+    "fines_p1": {
+      "score": 10,
+      "comment": "No ticket today"
+    },
+    "fines_p2": {
+      "score": 20,
+      "comment": "No ticket today"
+    }
+*
+* */
+
 export const createCheckForm = async (request, dispatch) => {
-  console.log( '@createCheckForm : ', request );
   const { task: taskId, selfGrade: { items: selfGradeItems = {} }, grade } = request;
-  console.log('createCheckForm taskId: ',taskId);
   const task = await getTaskById(taskId);
   const { items: taskItems, categoriesOrder } = task;
+  const comment = '';
   let score = 0;
   const checkForm = {
     taskId,
@@ -172,11 +225,10 @@ export const createCheckForm = async (request, dispatch) => {
       return {
         ...item,
         selfScore: score,
+        comment,
       };
     }),
   };
-
-  console.log('createCheckForm', checkForm);
 
   if (typeof dispatch === 'function') {
     dispatch(checkForm);

@@ -18,10 +18,9 @@ export default ({
     setValue(rangeValue);
     onChange(rangeValue);
   };
-
+  /*<Form.Label>{value}</Form.Label>*/
   return (
         <Form.Group controlId="formBasicRange">
-                <Form.Label>{value}</Form.Label>
                     <Form.Control
                         className="review-range"
                         min={min}
