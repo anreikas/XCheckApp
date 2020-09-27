@@ -48,22 +48,6 @@ export const reviewRequests = {
     const data = await response.data;
     return data;
   },
-  async postReview(review) {
-    const response = await instance.post('reviews', review);
-    const data = await response.data;
-    return data;
-  },
-  async getRequestById(id) {
-    const response = await instance.get(`reviewRequests/${id}`);
-    const data = await response.data;
-    return data;
-  },
-  async updateRequest(request) {
-    const { id } = request;
-    const response = await instance.put(`reviewRequests/${id}`, request);
-    const data = await response.data;
-    return data;
-  },
   async getRequestByTaskId(taskId, author) {
     const response = await instance.get(`reviewRequests?task=${taskId} ${author ? `&author=${author}` : ''}`);
     const data = await response.data;

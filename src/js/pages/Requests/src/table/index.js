@@ -55,9 +55,13 @@ const columns = [
 
 
 
-  export default () => {
-      console.log(datas)
-      return(
-        <Table columns={columns} bordered dataSource={datas} />
-      )
-  }
+export default ({ onClick, filter, title }) => (
+  <Table
+    title={title}
+    onClick={onClick}
+    columns={columns}
+    url={UrlPath(SERVER_URL, 'reviewRequests')}
+    maxRows={MAX_ROWS}
+    filter={filter}
+  />
+);

@@ -17,7 +17,7 @@ const MAX_ROWS = 5;
 const START_PAGE = 1;
 
 const TableComponent = ({
-  columns, url, maxRows = MAX_ROWS, onClick, filter = {},
+  columns, url, maxRows = MAX_ROWS, onClick, filter = {}, title = null,
 }) => {
   const searchInput = useRef(null);
   const searchState = useRef({
@@ -386,6 +386,11 @@ const TableComponent = ({
   return (
     <>
       <Table
+<<<<<<< HEAD
+=======
+        bordered
+        title={title}
+>>>>>>> feat: requests from check control
         dataSource={dataSource}
         columns={Columns}
         loading={loading}
