@@ -72,17 +72,47 @@ const CreateTask = ({ setUpdateTask,
             <option value="ARCHIVED">ARCHIVED</option>
           </select>
         </label>
-        <div className='form-item'>
-            {nTask.items.map((el, item) => <FormItemTask key={el.id}
-                                             category={el.category}
-                                             title={el.title}
-                                             minscore={el.minScore}
-                                             maxscore={el.maxScore}
-                                             description={el.description}
-                                             nTask={nTask}
-                                             setNtask={setNtask}
-                                             el={el}
-                                             item={item} />)}
+
+        <div className='form-items'>
+          <div className='form-item'>
+            <h4>Basic Scope</h4>
+            {nTask.items.map((el)=> el.category === 'Basic Scope'
+                                    && <FormItemTask key={el.id}
+                                    category={el.category}
+                                    title={el.title}
+                                    minscore={el.minScore}
+                                    maxscore={el.maxScore}
+                                    description={el.description}
+                                    nTask={nTask}
+                                    setNtask={setNtask}
+                                    id={el.id} />)}
+          </div>
+          <div className='form-item'>
+            <h4>Extra Scope</h4>
+            {nTask.items.map((el)=> el.category === 'Extra Scope'
+                                    && <FormItemTask key={el.id}
+                                    category={el.category}
+                                    title={el.title}
+                                    minscore={el.minScore}
+                                    maxscore={el.maxScore}
+                                    description={el.description}
+                                    nTask={nTask}
+                                    setNtask={setNtask}
+                                    id={el.id} />)}
+          </div>
+          <div className='form-item'>
+            <h4>Fines</h4>
+            {nTask.items.map((el)=> el.category === 'Fines'
+                                    && <FormItemTask key={el.id}
+                                    category={el.category}
+                                    title={el.title}
+                                    minscore={el.minScore}
+                                    maxscore={el.maxScore}
+                                    description={el.description}
+                                    nTask={nTask}
+                                    setNtask={setNtask}
+                                    id={el.id} />)}
+          </div>
         </div>
       </div>
 
