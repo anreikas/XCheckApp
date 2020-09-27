@@ -1,12 +1,12 @@
-import React, { useCallback, useState } from 'react';
-import { Table, Tag } from 'antd';
+import React, { useCallback } from 'react';
 import 'antd/dist/antd.css';
 import TableComponent from '../../../../components/Table/Table';
 import { SERVER_URL } from '../../../../constants';
 import { UrlPath } from '../../../../utils';
 
-const AuthorTable = ({ setCreateNewTask, author, setUpdateTask,setTaskId}) => {
-
+const AuthorTable = ({
+  setCreateNewTask, author, setUpdateTask, setTaskId,
+}) => {
   const MAX_ROWS = 3;
   const path = UrlPath(SERVER_URL, 'tasks');
 
@@ -48,12 +48,17 @@ const AuthorTable = ({ setCreateNewTask, author, setUpdateTask,setTaskId}) => {
   });
 
   return <>
-    <TableComponent filter={{ author: author }} columns={columns} url={path} maxRows={MAX_ROWS} onClick={onRowClickHandler} /> 
-    <button onClick={()=>{
+    <TableComponent
+      filter={{ author }}
+      columns={columns}
+      url={path}
+      maxRows={MAX_ROWS}
+      onClick={onRowClickHandler} />
+    <button onClick={() => {
       setCreateNewTask(true);
       setUpdateTask(false);
     }}>Create task</button>
-  </>
-}
+  </>;
+};
 
 export default AuthorTable;

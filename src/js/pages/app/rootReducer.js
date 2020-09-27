@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import { appReducer } from './AppReducer';
 import { tasksReducer } from '../Tasks/TasksReducer';
-import { tasksAuthorReducer } from '../Main/MainAuthor/MainAuthorReducer';
+import reviewReducer from '../Reviews/reducers/reviewReducer';
 
 const rootReducer = combineReducers({
   appReducer,
   tasksReducer,
-  tasksAuthorReducer
+  reviewReducer,
 });
 
 export default rootReducer;

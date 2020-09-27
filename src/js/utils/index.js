@@ -1,27 +1,19 @@
-import Axios from "axios";
+import Axios from 'axios';
 
 const instance = Axios.create({
   baseURL: 'https://x-check.herokuapp.com/',
   headers: {
-    'Accept': 'application/json',
+    Accept: 'application/json',
     'Content-Type': 'application/json',
-  }
-})
+  },
+});
 
 export const tasksAPI = {
   async getTasks() {
-    const response = await instance.get(`tasks`);
+    const response = await instance.get('tasks');
     return response.data;
   },
-  async saveTask(task) {
-    const response = await instance.post(`tasks`, task);
-    return response.data;
-  },
-  async updateTask(id, task) {
-    const response = await instance.put(`tasks/${id}`, task);
-    return response.data;
-  },
-}
+};
 
 export const usersAPI = {
   async getUser(id) {
@@ -30,18 +22,54 @@ export const usersAPI = {
     return data;
   },
   async setUser(id, githubId, roles) {
-    const response = await instance.post(`users`, {id, githubId, roles});
+    const response = await instance.post('users', { id, githubId, roles });
     return response.data;
   },
   async updateUser(id, githubId, roles) {
-    const response = await instance.put(`users/${id}`, {id, githubId, roles});
+    const response = await instance.put(`users/${id}`, { id, githubId, roles });
     return response.data;
   },
-}
+};
 
-/* eslint-disable indent */
-/* eslint-disable spaced-comment */
-/* eslint-disable no-unreachable */
+export const reviewRequests = {
+  async getRequests() {
+    const response = await instance.get('reviewRequests');
+    const data = await response.data;
+    return data;
+  },
+
+  async getTask(id) {
+    const response = await instance.get(`tasks/${id}`);
+    const data = await response.data;
+    return data;
+  },
+  async postRequest(obj) {
+    const response = await instance.post('reviewRequests', obj);
+    const data = await response.data;
+    return data;
+  },
+  async postReview(review) {
+    const response = await instance.post('reviews', review);
+    const data = await response.data;
+    return data;
+  },
+  async getRequestById(id) {
+    const response = await instance.get(`reviewRequests/${id}`);
+    const data = await response.data;
+    return data;
+  },
+  async updateRequest(request) {
+    const { id } = request;
+    const response = await instance.put(`reviewRequests/${id}`, request);
+    const data = await response.data;
+    return data;
+  },
+  async getRequestByTaskId(taskId, author) {
+    const response = await instance.get(`reviewRequests?task=${taskId} ${author ? `&author=${author}` : ''}`);
+    const data = await response.data;
+    return data;
+  },
+};
 
 const URL_DATA_SEPARATOR = '&';
 
@@ -58,7 +86,6 @@ export const UrlConstructor = (url, params, options = {}) => {
 export const UrlPath = (...args) => args.join('/');
 
 export const FetchReq = async (url, method = 'GET', data) => {
-  console.log('@FetchReq : url', url);
   const req = {
     method,
     headers: {
@@ -82,6 +109,12 @@ export const FetchReq = async (url, method = 'GET', data) => {
   }
 
   const result = await response.json();
+
+  const Total = Number(response.headers.get('X-Total-Count'));
+
+  if (!Number.isNaN(Total)) {
+    result.Total = Total;
+  }
 
   return result;
 };

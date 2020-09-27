@@ -8,7 +8,7 @@ const SubmitTask = ({closeCreateTask, updateTask, createNewTask, nTask, tasks}) 
   const cloneTask = JSON.parse(JSON.stringify(nTask));
 
   nTask.score = cloneTask.items.map(item => +item.maxScore).reduce((a,b) => a + b);
-  
+
   const onSubmitTask = async() => {
     await tasksAPI.saveTask(nTask);
     setIsSubmit('');
