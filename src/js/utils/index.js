@@ -37,8 +37,8 @@ export const reviewRequests = {
     const data = await response.data;
     return data;
   },
-  async getTask() {
-    const response = await instance.get('tasks');
+  async getTask(id) {
+    const response = await instance.get(`tasks/${id}`);
     const data = await response.data;
     return data;
   },

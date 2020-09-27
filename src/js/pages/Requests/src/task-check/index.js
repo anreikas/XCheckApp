@@ -8,6 +8,8 @@ export default ({ show, handleClose, task }) => {
   const [score, setScore] = useState(0);
   const [isReset, setIsReset] = useState(false);
 
+  const {items, category} = task;
+
   const reset = () => {
     setScore(0);
     setIsReset(true);
