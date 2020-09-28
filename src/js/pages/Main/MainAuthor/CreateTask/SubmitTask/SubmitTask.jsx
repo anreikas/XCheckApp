@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { tasksAPI } from '../../../../../utils';
 import './SubmitTask.scss';
 
-const SubmitTask = ({closeCreateTask, updateTask, createNewTask, nTask, tasks}) => {
+const SubmitTask = ({closeCreateTask, updateTask, createNewTask, nTask, tasks, setUpdateFl}) => {
   const [isSubmit, setIsSubmit] = useState('');
 
   const cloneTask = JSON.parse(JSON.stringify(nTask));
@@ -11,11 +11,13 @@ const SubmitTask = ({closeCreateTask, updateTask, createNewTask, nTask, tasks}) 
 
   const onSubmitTask = async() => {
     await tasksAPI.saveTask(nTask);
+    setUpdateFl(true);
     setIsSubmit('');
     closeCreateTask();
   }
   const onUpdateTask = async() => {
     await tasksAPI.updateTask(nTask.id, nTask);
+    setUpdateFl(true);
     setIsSubmit('');
     closeCreateTask();
   }

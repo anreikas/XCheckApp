@@ -9,11 +9,16 @@ const MainAuthor = ({ author }) => {
   const [createNewTask, setCreateNewTask] = useState(false);
   const [updateTask, setUpdateTask] = useState(false);
   const [taskId, setTaskId] = useState('');
+  const [updateFl, setUpdateFl] = useState(false)
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getTasksAuthor(author));
-  }, [getTasksAuthor, author]);
+    if(updateFl) {
+      dispatch(getTasksAuthor(author));
+      setUpdateFl(false);
+    }
+  }, [getTasksAuthor, author, updateFl]);
   const { tasksAuthor, tasks } = useSelector((state) => state.tasksAuthorReducer);
 
   return (
@@ -25,7 +30,8 @@ const MainAuthor = ({ author }) => {
                   tasks={tasks}
                   setCreateNewTask={setCreateNewTask}
                   setUpdateTask={setUpdateTask}
-                  taskId={taskId} />)
+                  taskId={taskId}
+                  setUpdateFl={setUpdateFl} />)
       : (<AuthorTable tasksAuthor={tasksAuthor}
                    setCreateNewTask={setCreateNewTask}
                    setUpdateTask={setUpdateTask}

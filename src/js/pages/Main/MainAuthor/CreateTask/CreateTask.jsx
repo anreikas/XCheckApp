@@ -12,6 +12,7 @@ const CreateTask = ({
   author,
   tasks,
   taskId,
+  setUpdateFl
 }) => {
   const task = updateTask
     ? JSON.parse(JSON.stringify(tasksAuthor)).find((el) => el.id === taskId)
@@ -129,7 +130,13 @@ const CreateTask = ({
         </div>
       </div>
 
-      <SubmitTask closeCreateTask={closeCreateTask} createNewTask={createNewTask} updateTask={updateTask} setUpdateTask={setUpdateTask} nTask={nTask} tasks={tasks} />
+      <SubmitTask closeCreateTask={closeCreateTask}
+                  createNewTask={createNewTask}
+                  updateTask={updateTask}
+                  setUpdateTask={setUpdateTask}
+                  nTask={nTask}
+                  tasks={tasks}
+                  setUpdateFl={setUpdateFl} />
     </div>
   );
 };
