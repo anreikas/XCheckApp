@@ -8,14 +8,15 @@ import TaskCheck from './task-check';
 import { getTasks, getTaskById, createRequest, sendRequest } from './actions';
 import { REQUESTS_TABLE_TYPES, STATES } from '../../../constants';
 
-const AUTHOR = 'rgovin';
+// const AUTHOR = 'rgovin';
 
 // const TABLE_TYPES = {
 //   PUBLISHED_REVIEWS: 'REVIEWS',
 //   SAVED_REQUESTS: 'SAVED_REQUESTS',
 // };
 
-export default function App() {
+export default function App({user}) {
+  const AUTHOR = user.nickname;
   const [task, setTask] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [taskCheckType, setTaskCheckType] = useState(REQUESTS_TABLE_TYPES.PUBLISHED_REQUESTS);

@@ -33,13 +33,16 @@ const Main = ({ user, isAuthenticated, role}) => {
             <p>nickname: {user.nickname}</p>
             <p>email: {user.email}</p>
             <p>role: {role}</p>
+            <p>
+              <a href="https://github.com/anreikas/XCheckApp/pull/14" target="_blank">GITHUB PR</a>
+            </p>
           </div>
         </div>
         <div className='main__control'>
           {role === 'Student' && <MainStudent />}
           {role === 'Author' && <MainAuthor author={user.nickname} user={user} />}
         </div>
-        <JSONPretty data={user} />
+        {/* <JSONPretty data={user} /> */}
         {/* { JSON.stringify(user, null, 2) } */}
       </div>
     )

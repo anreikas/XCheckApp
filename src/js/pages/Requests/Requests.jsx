@@ -2,9 +2,9 @@ import React from 'react';
 import './Requests.scss';
 import REQUESTS from './src/App';
 
-const Requests = (props) => (
+const Requests = ({user}) => (
   <div>
-    <REQUESTS props={props}/>
+    <REQUESTS user={user}/>
   </div>
 );
 
