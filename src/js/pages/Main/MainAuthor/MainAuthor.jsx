@@ -13,7 +13,7 @@ const MainAuthor = ({ author }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getTasksAuthor(author));
-  }, [getTasksAuthor]);
+  }, [getTasksAuthor, author]);
   const { tasksAuthor, tasks } = useSelector((state) => state.tasksAuthorReducer);
 
   return (
