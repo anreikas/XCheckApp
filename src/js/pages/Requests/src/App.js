@@ -17,7 +17,7 @@ import { REQUESTS_TABLE_TYPES, STATES } from '../../../constants';
 
 export default function App({user}) {
   // TODO вернуть автора
-  const AUTHOR = 'new-User';//user.nickname;
+  const AUTHOR = user.nickname;
   const [task, setTask] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [taskCheckType, setTaskCheckType] = useState(REQUESTS_TABLE_TYPES.PUBLISHED_REQUESTS);
