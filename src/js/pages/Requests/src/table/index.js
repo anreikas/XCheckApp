@@ -3,9 +3,9 @@ import React from 'react';
 import { Tag } from 'antd';
 import Table from '../../../../components/Table';
 import { UrlPath } from '../../../../utils';
-import { SERVER_URL } from '../../../../constants';
+import { SERVER_URL, STATES } from '../../../../constants';
 
-const MAX_ROWS = 50;
+const MAX_ROWS = 10;
 const columns = [
   {
     title: 'task',
@@ -22,17 +22,27 @@ const columns = [
   {
     title: 'state',
     dataIndex: 'state',
+    filters: [
+      {
+        text: STATES.PUBLISHED,
+        value: STATES.PUBLISHED,
+      },
+      {
+        text: STATES.DRAFT,
+        value: STATES.DRAFT,
+      },
+    ],
+    onFilter: (value, record) => record.state.indexOf(value) === 0,
     render: (tag) => (
       <Tag color={'geekblue'} key={tag}>
         {tag}
       </Tag>
     ),
-    sorter: true,
   },
   {
     title: 'score',
     dataIndex: 'score',
-    sorter: true,
+    sorter: (a, b) => a.score - b.score,
     map: ((record) => {
       const { selfGrade = {} } = record;
       const { items } = selfGrade;

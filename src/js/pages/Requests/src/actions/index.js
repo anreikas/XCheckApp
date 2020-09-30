@@ -205,7 +205,12 @@ items: [
 * */
 
 export const createCheckForm = async (request, dispatch) => {
-  const { task: taskId, selfGrade: { items: selfGradeItems = {} }, grade } = request;
+  const {
+    task: taskId,
+    selfGrade: { items: selfGradeItems = {} },
+    deployUrl,
+    prUrl,
+  } = request;
   const task = await getTaskById(taskId);
   const { items: taskItems, categoriesOrder } = task;
   const comment = '';
@@ -228,6 +233,8 @@ export const createCheckForm = async (request, dispatch) => {
         comment,
       };
     }),
+    deployUrl,
+    prUrl,
   };
 
   if (typeof dispatch === 'function') {

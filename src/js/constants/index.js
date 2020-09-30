@@ -10,3 +10,8 @@ export const STATES = {
   DRAFT: 'DRAFT',
   PUBLISHED: 'PUBLISHED',
 };
+
+export const ACTIONS = {
+  SAVE: 'SAVE',
+  SEND: 'SEND',
+};

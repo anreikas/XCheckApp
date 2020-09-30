@@ -11,17 +11,16 @@ import Requests from '../Requests/Requests';
 import './App.scss';
 
 const App = () => {
-  const { loginWithRedirect, user, isAuthenticated } = useAuth0();
-
+  const { loginWithRedirect, user = '', isAuthenticated } = useAuth0();
   const [role, setRole] = useState('Student');
 
   useEffect(() => {
     if (localStorage.getItem('role')) {
       setRole(localStorage.getItem('role'));
     }
-  })
+  });
 
-  if (!isAuthenticated) {
+  if (false /* !isAuthenticated */) {
     return <Login loginWithRedirect={loginWithRedirect}
                   isAuthenticated={isAuthenticated}
                   role={role}

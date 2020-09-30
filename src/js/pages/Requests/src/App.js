@@ -4,7 +4,7 @@ import 'antd/dist/antd.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Button } from 'react-bootstrap';
 import Table from './table';
-import TaskCheck from './task-check';
+import TaskCheck from './task-check/index';
 import { getTasks, getTaskById, createRequest, sendRequest } from './actions';
 import { REQUESTS_TABLE_TYPES, STATES } from '../../../constants';
 
@@ -16,7 +16,8 @@ import { REQUESTS_TABLE_TYPES, STATES } from '../../../constants';
 // };
 
 export default function App({user}) {
-  const AUTHOR = user.nickname;
+  // TODO вернуть автора
+  const AUTHOR = 'new-User';//user.nickname;
   const [task, setTask] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [taskCheckType, setTaskCheckType] = useState(REQUESTS_TABLE_TYPES.PUBLISHED_REQUESTS);
@@ -27,6 +28,7 @@ export default function App({user}) {
   const [updateDrafted, setUpdateDrafted] = useState(false);
   const [updatePublished, setUpdatePublished] = useState(false);
   const handleClose = () => {
+    console.log( '@handleClose : ' );
     setTaskCheck(null);
   };
 
@@ -50,6 +52,7 @@ export default function App({user}) {
         save={saveRequest}
         send={sendRequest}
         handleClose={handleClose}
+        author={AUTHOR}
         request={request}
         onSend={({ state }) => {
           setUpdateDrafted(true);
