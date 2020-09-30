@@ -60,7 +60,13 @@ const columns = [
   },
 ];
 
-export default ({ onClick, filter, title, update, onUpdate }) => (
+export default ({
+  onClick,
+  filter,
+  title,
+  update,
+  onUpdate,
+}) => (
   <Table
     title={title}
     onClick={onClick}

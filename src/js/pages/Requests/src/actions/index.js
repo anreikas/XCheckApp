@@ -263,13 +263,12 @@ export const createRequest = async (taskId, author, state = 'PUBLISHED') => {
   };
 };
 
-export const getMySavedTasks = async (dispatch) => {
-  // const tasks = await tasksAPI.getTasks();
-  //
-  // dispatch(
-  //   tasks.map((el) => ({
-  //     ...el,
-  //     key: el.id,
-  //   })),
-  // );
-};
+// export const getMySavedTasks = async (dispatch) => {
+//   const tasks = await tasksAPI.getTasks();
+//   dispatch(
+//     tasks.map((el) => ({
+//       ...el,
+//       key: el.id,
+//     })),
+//   );
+// };

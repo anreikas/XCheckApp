@@ -8,7 +8,7 @@ const rootReducer = combineReducers({
   appReducer,
   tasksReducer,
   reviewReducer,
-  tasksAuthorReducer
+  tasksAuthorReducer,
 });
 
 export default rootReducer;

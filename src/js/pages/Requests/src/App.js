@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Button } from 'react-bootstrap';
 import Table from './table';
 import TaskCheck from './task-check/index';
-import { getTasks, getTaskById, createRequest, sendRequest } from './actions';
+import { getTasks, getTaskById, createRequest } from './actions';
 import { REQUESTS_TABLE_TYPES, STATES } from '../../../constants';
 
 // const AUTHOR = 'rgovin';
@@ -15,9 +15,10 @@ import { REQUESTS_TABLE_TYPES, STATES } from '../../../constants';
 //   SAVED_REQUESTS: 'SAVED_REQUESTS',
 // };
 
-export default function App({user}) {
+export default function App({ user }) {
   // TODO вернуть автора
   const AUTHOR = user.nickname;
+  /* eslint-disable no-unused-vars */
   const [task, setTask] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [taskCheckType, setTaskCheckType] = useState(REQUESTS_TABLE_TYPES.PUBLISHED_REQUESTS);
@@ -28,7 +29,8 @@ export default function App({user}) {
   const [updateDrafted, setUpdateDrafted] = useState(false);
   const [updatePublished, setUpdatePublished] = useState(false);
   const handleClose = () => {
-    console.log( '@handleClose : ' );
+    /* eslint-disable no-console */
+    console.log('@handleClose : ');
     setTaskCheck(null);
   };
 
@@ -60,14 +62,14 @@ export default function App({user}) {
         }}
       />,
     );
-  }, []);
+  }, [AUTHOR, saveRequest, sendRequest]);
 
-  const handleShow = useCallback( async (e) => {
+  const handleShow = useCallback(async (e) => {
     e.preventDefault();
     const newRequest = await createRequest(selectedTaskId, AUTHOR, STATES.DRAFT);
 
     showTaskCheck(REQUESTS_TABLE_TYPES.DRAFTED_REQUESTS, newRequest);
-  }, [selectedTaskId]);
+  }, [selectedTaskId, AUTHOR, showTaskCheck]);
 
   const onUpdate = useCallback(() => {
     setUpdateDrafted(false);

@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Form } from 'react-bootstrap';
 
 export default ({
-  min = 0, max = 0, isReset, resetCallBack, onChange, value: inValue = null,
+  min = 0,
+  max = 0,
+  isReset,
+  resetCallBack,
+  onChange,
+  value: inValue = null,
 }) => {
   const [value, setValue] = useState(inValue || 0);
 
