@@ -4,7 +4,7 @@ import {
 } from 'react-bootstrap';
 import { ACTIONS } from '../../../../../constants';
 
-const SendRrequestModal = ({ show, action, onHide }) => {
+const SendRequestModal = ({ show, action, onHide }) => {
   const [deployUrl, setDeployUrl] = useState('http://');
   const [prUrl, setPrUrl] = useState('https://github.com/');
 
@@ -59,8 +59,8 @@ const SendRrequestModal = ({ show, action, onHide }) => {
   );
 };
 
-SendRrequestModal.propTypes = {
+SendRequestModal.propTypes = {
 
 };
 
-export default SendRrequestModal;
+export default SendRequestModal;

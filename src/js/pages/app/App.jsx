@@ -20,7 +20,7 @@ const App = () => {
     }
   }, [setRole]);
 
-  if (!isAuthenticated) {
+  if (false /* !isAuthenticated */) {
     return <Login loginWithRedirect={loginWithRedirect}
                   isAuthenticated={isAuthenticated}
                   role={role}
@@ -35,7 +35,7 @@ const App = () => {
       <div className='app-content'>
         <Route exact path='/' render={() => <Main isAuthenticated={isAuthenticated} user={user} role={role} /> }/>
         <Route path='/tasks' render={() => <Tasks /> }/>
-        <Route path='/requests' render={() => <Requests user={user} /> }/>
+        <Route path='/requests' render={() => <Requests user={{nickname: 'new-user'}} /> }/>
         <Route path='/reviews' render={() => <Reviews /> }/>
       </div>
     </div>

@@ -6,7 +6,6 @@ import SendRequestModal from './sendRrequestModal';
 import Range from '../range';
 import { REQUESTS_TABLE_TYPES, STATES, ACTIONS } from '../../../../constants';
 import { createCheckForm, sendRequest, sendReview } from '../actions';
-// import Form from '../form';
 
 const TaskCheck = ({
   request, type, show, handleClose, onSend, author: AUTHOR,
@@ -16,8 +15,9 @@ const TaskCheck = ({
   const [sendModal, setSendModal] = useState(null);
   const [score, setScore] = useState(0);
   const [isReset, setIsReset] = useState(false);
+  const [sendButton, setSendButton] = useState(null);
   const [scoreText, setScoreText] = useState('score');
-  // const { items, category } = task;
+
   const reset = () => {
     const newFormData = { ...checkFormData };
     const { items } = newFormData;
@@ -30,7 +30,6 @@ const TaskCheck = ({
 
     setIsReset(true);
   };
-
   const close = () => {
     setScore(0);
     handleClose();
@@ -51,7 +50,6 @@ const TaskCheck = ({
       })),
     };
   }, [request, checkFormData]);
-
   const action = useCallback(({ actionType, deployUrl, prUrl }) => {
     const {
       author,
@@ -61,7 +59,6 @@ const TaskCheck = ({
       prUrl: requestPrUrl,
     } = request;
     const grade = getGrade();
-
     let state = '';
 
     switch (actionType) {
@@ -95,7 +92,7 @@ const TaskCheck = ({
     }
 
     handleClose();
-  });
+  }, [request, checkFormData]);
   const onCommentChange = useCallback((id, { target: { value } }) => {
     const newFormData = { ...checkFormData };
     const { items } = newFormData;
@@ -104,7 +101,7 @@ const TaskCheck = ({
     item.comment = value;
 
     setCheckFormData(newFormData);
-  });
+  }, [checkFormData]);
   const changeScore = useCallback((id, value) => {
     const newFormData = { ...checkFormData };
     const { items } = newFormData;
@@ -126,11 +123,7 @@ const TaskCheck = ({
     } else {
       setSendModal(null);
     }
-  });
-
-  function res() {
-    setIsReset(false);
-  }
+  }, [checkFormData]);
 
   useEffect(() => {
     if (type === REQUESTS_TABLE_TYPES.PUBLISHED_REVIEWS) {
@@ -177,7 +170,7 @@ const TaskCheck = ({
                           type !== REQUESTS_TABLE_TYPES.PUBLISHED_REVIEWS
                             ? (<Range
                               isReset={isReset}
-                              resetCallBack={res}
+                              resetCallBack={setIsReset.bind(null, false)}
                               min={minScore}
                               max={maxScore}
                               onChange={changeScore.bind(null, id)}
@@ -220,6 +213,37 @@ const TaskCheck = ({
       }
     }
   }, [checkFormData]);
+
+  useEffect(() => {
+    switch (type) {
+      case REQUESTS_TABLE_TYPES.DRAFTED_REQUESTS:
+        setSendButton(
+          <Button
+            variant="primary"
+            onClick={() => {
+              setCheckForm(null);
+              showRequestFrom(true);
+            }}
+          >
+            Создать запрос
+          </Button>,
+        );
+        break;
+      case REQUESTS_TABLE_TYPES.PUBLISHED_REQUESTS:
+        setSendButton(
+          <Button
+            variant="primary"
+            onClick={action.bind(null, { actionType: ACTIONS.SEND })}
+          >
+            Отправить результат
+          </Button>,
+        );
+        break;
+      case REQUESTS_TABLE_TYPES.PUBLISHED_REVIEWS:
+      default:
+        setSendButton(null);
+    }
+  }, [type, checkFormData]);
 
   return (
     <>
@@ -272,18 +296,7 @@ const TaskCheck = ({
               </Button>)
               : null
           }
-          {
-            type === REQUESTS_TABLE_TYPES.DRAFTED_REQUESTS
-              ? (<Button variant="primary" onClick={() => {
-                setCheckForm(null);
-                showRequestFrom(true);
-              }}>
-                  Создать запрос
-              </Button>)
-              : (<Button variant="primary" onClick={action.bind(null, { actionType: ACTIONS.SEND })}>
-                Отправить результат
-              </Button>)
-          }
+          {sendButton}
         </Modal.Footer>
       </Modal>
       {sendModal}
