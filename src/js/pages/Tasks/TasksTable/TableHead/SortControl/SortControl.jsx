@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './SortControl.scss';
 
-const SortControl = ({ isSort, setIsSort, sortUp, sortDown, tasks}) => {
-  return (
+const SortControl = ({
+  isSort, setIsSort, sortUp, sortDown, tasks,
+}) => (
     <div className='sort-control' onClick={() => {
       if (isSort) {
         setIsSort(false);
@@ -12,11 +13,10 @@ const SortControl = ({ isSort, setIsSort, sortUp, sortDown, tasks}) => {
         sortDown(tasks);
       }
     }}>
-      <span className={isSort === true ? 'sort-control-active': null}>&#9650;</span>
+      <span className={isSort === true ? 'sort-control-active' : null}>&#9650;</span>
       <br/>
-      <span className={isSort === false ? 'sort-control-active': null}>&#9660;</span>
+      <span className={isSort === false ? 'sort-control-active' : null}>&#9660;</span>
     </div>
-  )
-}
+);
 
 export default SortControl;

@@ -1,9 +1,8 @@
 import React from 'react';
 
-const ElementsDescription = ({taskShow, category}) => {
-  const description = taskShow.map(item => {
-    if (category === item.category) {
-      return (
+const ElementsDescription = ({ taskShow, category }) => taskShow.map((item) => {
+  if (category === item.category) {
+    return (
         <ul key={item.id}>
           <li>{item.title}</li>
           <ul>
@@ -12,11 +11,10 @@ const ElementsDescription = ({taskShow, category}) => {
             <li>maxScore: {item.maxScore}</li>
           </ul>
         </ul>
-      )
-    }
-  })
+    );
+  }
 
-  return description;
-}
+  return null;
+});
 
 export default ElementsDescription;

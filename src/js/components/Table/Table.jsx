@@ -89,6 +89,7 @@ const TableComponent = ({
 
     return data;
   }, [url]);
+
   const getColumnSearchProps = useCallback(
     ({ dataIndex, sorter }) => {
       let sorterMethod = false;
@@ -155,7 +156,7 @@ const TableComponent = ({
         sorter: sorterMethod,
       };
     },
-    [searchState],
+    [searchState, handleReset, handleSearch],
   );
 
   const showData = useCallback(async () => {
@@ -169,7 +170,7 @@ const TableComponent = ({
         onUpdate();
       }
     }, 200);
-  }, [pageNumber]);
+  }, [pageNumber, getData, onUpdate]);
 
   useEffect(() => {
     if (update) {
@@ -196,16 +197,8 @@ const TableComponent = ({
   }, []);
 
   useEffect(() => {
-    // const showData = async () => {
-    //   setLoading(true);
-    //   const data = await getData(pageNumber);
-    //
-    //   setDataSource(data);
-    //   setTimeout(setLoading.bind(false), 200);
-    // };
-
     showData();
-  }, [pageNumber]);
+  }, [pageNumber, showData]);
 
   return (
     <>

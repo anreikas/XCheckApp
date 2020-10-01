@@ -1,9 +1,7 @@
-import React, {
-  useState, useEffect, useCallback, useRef,
-} from 'react';
+import React, { useState, useCallback } from 'react';
 import TableComponent from '../../components/Table';
 import { UrlPath } from '../../utils';
-import {SERVER_URL, REQUESTS_TABLE_TYPES, STATES} from '../../constants';
+import { SERVER_URL, REQUESTS_TABLE_TYPES, STATES } from '../../constants';
 import TaskCheck from '../Requests/src/task-check/index.jsx';
 import './Reviews.scss';
 import './styles.scss';
@@ -67,11 +65,10 @@ const Reviews = () => {
       width: '30%',
       dataIndex: 'reviewer',
       textType: true,
-      sorter: (a, b) => a > b ? 1 : -1,
+      sorter: (a, b) => (a > b ? 1 : -1),
       map: (record) => record.grade.author,
     },
   ];
-  const onRowClickHandler = useCallback((record, rowIndex) => console.log('hello', record, ' / ', rowIndex));
   const [taskCheck, setTaskCheck] = useState(null);
   const handleClose = () => {
     setTaskCheck(null);
@@ -91,7 +88,6 @@ const Reviews = () => {
       <TableComponent
         columns={Columns}
         url={path}
-        // filter={{ author: 'rgovin' }}
         maxRows={MAX_ROWS}
         onClick={showTaskCheck}
       />

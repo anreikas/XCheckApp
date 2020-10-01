@@ -1,10 +1,10 @@
+/* eslint-disable no-shadow */
 import React, { useState } from 'react';
 import PopupWindow from './PopupWindow/PopupWindow';
 import SortControl from './SortControl/SortControl';
 import './TableHead.scss';
 
-const TableHead = ({tasks, setDataTable}) => {
-
+const TableHead = ({ tasks, setDataTable }) => {
   const [sortFlag, setSortFlag] = useState('');
   const [isSortTasks, setIsSortTasks] = useState('');
   const [isSortAuthor, setIsSortAuthor] = useState('');
@@ -14,75 +14,75 @@ const TableHead = ({tasks, setDataTable}) => {
     setSortFlag('false');
     setIsSortAuthor('false');
     setAuthorTasks(arr);
-    let newArr = JSON.parse(JSON.stringify(arr));
-    setDataTable(newArr.sort((a, b) => a.id > b.id ? 1: -1));
-  }
+    const newArr = JSON.parse(JSON.stringify(arr));
+    setDataTable(newArr.sort((a, b) => (a.id > b.id ? 1 : -1)));
+  };
   const sortTasksDown = (arr) => {
     setSortFlag('false');
     setIsSortAuthor('false');
     setAuthorTasks(arr);
-    let newArr = JSON.parse(JSON.stringify(arr));
-    setDataTable(newArr.sort((a, b) => a.id > b.id ? -1: 1));
-  }
+    const newArr = JSON.parse(JSON.stringify(arr));
+    setDataTable(newArr.sort((a, b) => (a.id > b.id ? -1 : 1)));
+  };
   const sortAuthorUp = (arr) => {
     setSortFlag('false');
     setIsSortTasks('false');
     setAuthorTasks(arr);
-    let newArr = JSON.parse(JSON.stringify(arr));
-    setDataTable(newArr.sort((a, b) => a.author > b.author ? 1: -1));
-  }
+    const newArr = JSON.parse(JSON.stringify(arr));
+    setDataTable(newArr.sort((a, b) => (a.author > b.author ? 1 : -1)));
+  };
   const sortAuthorDown = (arr) => {
     setSortFlag('false');
     setIsSortTasks('false');
     setAuthorTasks(arr);
-    let newArr = JSON.parse(JSON.stringify(arr));
-    setDataTable(newArr.sort((a, b) => a.author > b.author ? -1: 1));
-  }
+    const newArr = JSON.parse(JSON.stringify(arr));
+    setDataTable(newArr.sort((a, b) => (a.author > b.author ? -1 : 1)));
+  };
   const sortScoreUp = (arr) => {
     setIsSortAuthor('false');
     setIsSortTasks('false');
-    let newArr = JSON.parse(JSON.stringify(arr));
-    setDataTable(newArr.sort((a, b) => a.items.map(item => item.maxScore)
-    .reduce((a, b) => a + b) > b.items.map(item => item.maxScore)
-    .reduce((a, b) => a + b) ? 1 : -1));
-  }
+    const newArr = JSON.parse(JSON.stringify(arr));
+    setDataTable(newArr.sort((a, b) => (a.items.map((item) => item.maxScore)
+      .reduce((a, b) => a + b) > b.items.map((item) => item.maxScore)
+      .reduce((a, b) => a + b) ? 1 : -1)));
+  };
   const sortScoreDown = (arr) => {
     setIsSortAuthor('false');
     setIsSortTasks('false');
-    let newArr = JSON.parse(JSON.stringify(arr));
-    setDataTable(newArr.sort((a, b) => a.items.map(item => item.maxScore)
-    .reduce((a, b) => a + b) > b.items.map(item => item.maxScore)
-    .reduce((a, b) => a + b) ? -1 : 1));
-  }
+    const newArr = JSON.parse(JSON.stringify(arr));
+    setDataTable(newArr.sort((a, b) => (a.items.map((item) => item.maxScore)
+      .reduce((a, b) => a + b) > b.items.map((item) => item.maxScore)
+      .reduce((a, b) => a + b) ? -1 : 1)));
+  };
   const searchTask = (value) => {
-    let newArr = JSON.parse(JSON.stringify(tasks));
-    setDataTable(newArr.filter(el => el.id === value));
-  }
+    const newArr = JSON.parse(JSON.stringify(tasks));
+    setDataTable(newArr.filter((el) => el.id === value));
+  };
   const searchAuthor = (value) => {
     let newArr = JSON.parse(JSON.stringify(tasks));
-    newArr = newArr.filter(el => el.author === value)
+    newArr = newArr.filter((el) => el.author === value);
     setAuthorTasks(newArr);
     setDataTable(newArr);
-  }
-  
+  };
+
   const [isSearchTask, setIsSearchTask] = useState(false);
   const [isSearchAuthor, setIsSearchAuthor] = useState(false);
   const handleSearchTask = () => {
-    if(isSearchTask) {
+    if (isSearchTask) {
       setIsSearchTask(false);
     } else {
       setIsSearchTask(true);
       setIsSearchAuthor(false);
     }
-  }
+  };
   const handleSearchAuthor = () => {
-    if(isSearchAuthor) {
+    if (isSearchAuthor) {
       setIsSearchAuthor(false);
     } else {
       setIsSearchAuthor(true);
       setIsSearchTask(false);
     }
-  }
+  };
 
   const handleReset = () => {
     setSortFlag('');
@@ -90,7 +90,7 @@ const TableHead = ({tasks, setDataTable}) => {
     setIsSortTasks('');
     setIsSortAuthor('');
     setDataTable(tasks);
-  }
+  };
 
   return (
     <tr>
@@ -101,7 +101,7 @@ const TableHead = ({tasks, setDataTable}) => {
                        setIsSort={setIsSortTasks}
                        sortUp={sortTasksUp}
                        sortDown={sortTasksDown}
-                       tasks={tasks}  />
+                       tasks={tasks} />
           <div className='tasks__table__header__search'>
             <span className='tasks__table__header-loupe' onClick={handleSearchTask}>
               &#9906;
@@ -120,7 +120,7 @@ const TableHead = ({tasks, setDataTable}) => {
                        setIsSort={setIsSortAuthor}
                        sortUp={sortAuthorUp}
                        sortDown={sortAuthorDown}
-                       tasks={tasks}  />
+                       tasks={tasks} />
           <div className='tasks__table__header__search'>
             <span className='tasks__table__header-loupe' onClick={handleSearchAuthor}>
               &#9906;
@@ -131,7 +131,7 @@ const TableHead = ({tasks, setDataTable}) => {
                      setSearchFlag={setIsSearchAuthor}
                      sortName={searchAuthor}
                      placehold='Search author' />
-        
+
       </th>
       <th className='tasks__table__header-item'>
         <div className='tasks__table__header-item__wrap'>
@@ -140,14 +140,14 @@ const TableHead = ({tasks, setDataTable}) => {
                        setIsSort={setSortFlag}
                        sortUp={sortScoreUp}
                        sortDown={sortScoreDown}
-                       tasks={authorTasks}  />
+                       tasks={authorTasks} />
         </div>
       </th>
       <th className='tasks__table__header-item'>
         <button className='tasks__table__header-bth' onClick={handleReset}>RESET</button>
       </th>
     </tr>
-  )
-}
+  );
+};
 
 export default TableHead;

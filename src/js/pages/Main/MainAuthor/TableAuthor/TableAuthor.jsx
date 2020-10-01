@@ -40,12 +40,11 @@ const AuthorTable = ({
     },
   ];
 
-  const onRowClickHandler = useCallback((record, rowIndex) => {
+  const onRowClickHandler = useCallback((record) => {
     setTaskId(record.id);
     setUpdateTask(true);
     setCreateNewTask(false);
-    console.log('hello', record.id, ' / ', rowIndex);
-  });
+  }, [setTaskId, setUpdateTask, setCreateNewTask]);
 
   return <>
     <TableComponent

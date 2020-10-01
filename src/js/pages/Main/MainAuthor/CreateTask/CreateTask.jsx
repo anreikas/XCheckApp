@@ -12,7 +12,7 @@ const CreateTask = ({
   author,
   tasks,
   taskId,
-  setUpdateFl
+  setUpdateFl,
 }) => {
   const task = updateTask
     ? JSON.parse(JSON.stringify(tasksAuthor)).find((el) => el.id === taskId)
@@ -51,7 +51,6 @@ const CreateTask = ({
     };
 
   const [nTask, setNtask] = useState(task);
-  console.log(nTask);
   const closeCreateTask = () => {
     setUpdateTask(false);
     setCreateNewTask(false);

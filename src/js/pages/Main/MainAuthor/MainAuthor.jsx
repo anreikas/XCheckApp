@@ -9,12 +9,12 @@ const MainAuthor = ({ author }) => {
   const [createNewTask, setCreateNewTask] = useState(false);
   const [updateTask, setUpdateTask] = useState(false);
   const [taskId, setTaskId] = useState('');
-  const [updateFl, setUpdateFl] = useState(false)
+  const [updateFl, setUpdateFl] = useState(false);
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getTasksAuthor(author));
-    if(updateFl) {
+    if (updateFl) {
       dispatch(getTasksAuthor(author));
       setUpdateFl(false);
     }

@@ -3,15 +3,14 @@ import { tasksAPI } from '../../../utils';
 import './MainStudent.scss';
 
 const MainStudent = () => {
-
   const [tasks, setTasks] = useState(0);
 
   const countTasks = async () => {
     const data = await tasksAPI.getTasks();
     setTasks(data.length);
-  }
+  };
 
-  useEffect(()=> {
+  useEffect(() => {
     countTasks();
   });
 
@@ -29,7 +28,7 @@ const MainStudent = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default MainStudent;
