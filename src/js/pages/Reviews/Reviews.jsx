@@ -1,14 +1,12 @@
-import React, {
-  useState, useEffect, useCallback, useRef,
-} from 'react';
+import React, { useState, useCallback } from 'react';
 import TableComponent from '../../components/Table';
 import { UrlPath } from '../../utils';
-import { SERVER_URL, REQUESTS_TABLE_TYPES } from '../../constants';
-import TaskCheck from '../Requests/src/task-check/index.js';
+import { SERVER_URL, REQUESTS_TABLE_TYPES, STATES } from '../../constants';
+import TaskCheck from '../Requests/src/task-check/index.jsx';
 import './Reviews.scss';
 import './styles.scss';
 
-const MAX_ROWS = 50;
+const MAX_ROWS = 10;
 const path = UrlPath(SERVER_URL, 'reviews');
 
 const Reviews = () => {
@@ -30,23 +28,47 @@ const Reviews = () => {
     {
       title: 'Score',
       dataIndex: 'score',
+      map: ((record) => {
+        const { grade = {} } = record;
+        const { items } = grade;
+
+        if (items) {
+          return Object.entries(items).reduce((acc, [, value]) => {
+            const { score } = value;
+
+            return acc + score;
+          }, 0);
+        }
+
+        return '--';
+      }),
       sorter: (a, b) => a.score - b.score,
     },
     {
       title: 'State',
       dataIndex: 'state',
       textType: true,
-      sorter: true,
+      filters: [
+        {
+          text: STATES.PUBLISHED,
+          value: STATES.PUBLISHED,
+        },
+        {
+          text: STATES.DRAFT,
+          value: STATES.DRAFT,
+        },
+      ],
+      onFilter: (value, record) => record.state.indexOf(value) === 0,
     },
     {
       title: 'Reviewer',
       width: '30%',
       dataIndex: 'reviewer',
       textType: true,
-      sorter: true,
+      sorter: (a, b) => (a > b ? 1 : -1),
+      map: (record) => record.grade.author,
     },
   ];
-  const onRowClickHandler = useCallback((record, rowIndex) => console.log('hello', record, ' / ', rowIndex));
   const [taskCheck, setTaskCheck] = useState(null);
   const handleClose = () => {
     setTaskCheck(null);
@@ -66,7 +88,6 @@ const Reviews = () => {
       <TableComponent
         columns={Columns}
         url={path}
-        // filter={{ author: 'rgovin' }}
         maxRows={MAX_ROWS}
         onClick={showTaskCheck}
       />

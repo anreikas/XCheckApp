@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './TasksDescription.scss';
 import ElementsDescription from './ElementsDescription/ElementsDescription';
 
-const TasksDescription = ({tasks, showId, setShowDescription}) => {
-  const [taskShow] = tasks.map(el => el.id === showId && el).filter(n => n);
+const TasksDescription = ({ tasks, showId, setShowDescription }) => {
+  const [taskShow] = tasks.map((el) => el.id === showId && el).filter((n) => n);
 
-  const maxPoint = taskShow.items.map(item => item.maxScore).reduce((a, b) => a + b);
+  const maxPoint = taskShow.items.map((item) => item.maxScore).reduce((a, b) => a + b);
 
   const categories = taskShow.categoriesOrder.map((el, i) => <div key={i}>
     <ul>
@@ -22,10 +22,10 @@ const TasksDescription = ({tasks, showId, setShowDescription}) => {
       <hr/>
       <span>Maximum amount of points - {maxPoint}</span>
       {categories}
-      <button className='task-description-bth' onClick={()=> setShowDescription(false)}>BACK</button>
+      <button className='task-description-bth' onClick={() => setShowDescription(false)}>BACK</button>
     </div>
-    
-  )
-}
+
+  );
+};
 
 export default TasksDescription;

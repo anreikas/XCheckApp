@@ -7,12 +7,13 @@ const LogoutButton = () => {
   const handleSubmit = () => {
     localStorage.clear();
     logout();
-  }
+  };
+
   return (
     <button className='logout-bth' onClick={handleSubmit}>
       Log Out
     </button>
-  )
-}
+  );
+};
 
 export default LogoutButton;

@@ -17,9 +17,17 @@ const Tasks = () => {
   const { tasks } = useSelector((state) => state.tasksReducer);
 
   if (!isShowDescription && tasks) {
-    return <TasksTable tasks={tasks} setShowDescription={setShowDescription} setShowId={setShowId} />;
+    return <TasksTable
+      tasks={tasks}
+      setShowDescription={setShowDescription}
+      setShowId={setShowId}
+    />;
   } if (isShowDescription && tasks) {
-    return <TasksDescription tasks={tasks} showId={showId} setShowDescription={setShowDescription} />;
+    return <TasksDescription
+      tasks={tasks}
+      showId={showId}
+      setShowDescription={setShowDescription}
+    />;
   }
   return <div>TASKS</div>;
 };

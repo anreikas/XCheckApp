@@ -2,21 +2,18 @@ import React, { useState, useEffect, useCallback } from 'react';
 import {
   Form, Button, Modal, Alert,
 } from 'react-bootstrap';
-import Range from '../range/index';
-import { REQUESTS_TABLE_TYPES, STATES } from '../../../../constants';
+import SendRequestModal from './sendRrequestModal';
+import Range from '../range';
+import { REQUESTS_TABLE_TYPES, STATES, ACTIONS } from '../../../../constants';
 import { createCheckForm, sendRequest, sendReview } from '../actions';
 // import Form from '../form';
 
-const ACTIONS = {
-  SAVE: 'SAVE',
-  SEND: 'SEND',
-};
-
 const TaskCheck = ({
-  request, type, show, handleClose, onSend,
+  request, type, show, handleClose, onSend, author: AUTHOR,
 }) => {
   const [checkFormData, setCheckFormData] = useState({});
   const [checkForm, setCheckForm] = useState(null);
+  const [sendModal, setSendModal] = useState(null);
   const [score, setScore] = useState(0);
   const [isReset, setIsReset] = useState(false);
   const [scoreText, setScoreText] = useState('score');
@@ -39,12 +36,12 @@ const TaskCheck = ({
     handleClose();
   };
   const getGrade = useCallback(() => {
-    const { author, id: requestId, task } = request;
+    const { id: requestId, task } = request;
     const { items: formItems } = checkFormData;
 
     return {
       id: `${requestId}-self-grade-${Date.now()}`,
-      author,
+      author: AUTHOR,
       requestId,
       task,
       items: Object.fromEntries(formItems.map((formItem) => {
@@ -55,8 +52,14 @@ const TaskCheck = ({
     };
   }, [request, checkFormData]);
 
-  const action = useCallback((actionType) => {
-    const { author, id: requestId, task } = request;
+  const action = useCallback(({ actionType, deployUrl, prUrl }) => {
+    const {
+      author,
+      id: requestId,
+      task,
+      deployUrl: requestDeployUrl,
+      prUrl: requestPrUrl,
+    } = request;
     const grade = getGrade();
 
     let state = '';
@@ -76,6 +79,8 @@ const TaskCheck = ({
         ...request,
         selfGrade: grade,
         state,
+        deployUrl,
+        prUrl,
       }, onSend);
     } else if (type === REQUESTS_TABLE_TYPES.PUBLISHED_REQUESTS) {
       sendReview({
@@ -84,6 +89,8 @@ const TaskCheck = ({
         grade,
         state,
         task,
+        deployUrl: requestDeployUrl,
+        prUrl: requestPrUrl,
       });
     }
 
@@ -107,6 +114,19 @@ const TaskCheck = ({
 
     setCheckFormData(newFormData);
   }, [checkFormData]);
+  const showRequestFrom = useCallback((showForm) => {
+    if (showForm) {
+      setSendModal(
+        <SendRequestModal
+          action={action}
+          onHide={handleClose}
+          show={true}
+        />,
+      );
+    } else {
+      setSendModal(null);
+    }
+  });
 
   function res() {
     setIsReset(false);
@@ -202,44 +222,72 @@ const TaskCheck = ({
   }, [checkFormData]);
 
   return (
-    <Modal show={show} onHide={close} size={'xl'}>
-      <Modal.Header closeButton>
-        <Modal.Title className="w-100">
-          <div className='d-flex justify-content-between align-items-center'>
-            <p className="my-0">{checkFormData.taskId}</p>
-            <div className='d-flex align-items-center'>
-              {
-                type !== REQUESTS_TABLE_TYPES.PUBLISHED_REVIEWS
-                  ? (<Button variant="secondary" onClick={reset}>
-                    Reset
-                  </Button>)
-                  : null
-              }
-              <p className="my-0 mx-2">Score: {score}</p>
+    <>
+      <Modal show={show} onHide={close} size={'xl'}>
+        <Modal.Header closeButton>
+          <Modal.Title className="w-100">
+            <div className='d-flex justify-content-between align-items-center'>
+              <p className="my-0">{checkFormData.taskId}</p>
+              <div className='d-flex align-items-center'>
+                {
+                  type !== REQUESTS_TABLE_TYPES.PUBLISHED_REVIEWS
+                    ? (<Button variant="secondary" onClick={reset}>
+                      Reset
+                    </Button>)
+                    : null
+                }
+                <p className="my-0 mx-2">Score: {score}</p>
+              </div>
             </div>
-          </div>
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        {checkForm}
-      </Modal.Body>
-      <Modal.Footer>
-        {
-          type === REQUESTS_TABLE_TYPES.DRAFTED_REQUESTS
-            ? (<Button variant="secondary" onClick={action.bind(null, ACTIONS.SAVE)}>
-              Сохранить
-            </Button>)
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {(type === REQUESTS_TABLE_TYPES.PUBLISHED_REQUESTS
+            || type === REQUESTS_TABLE_TYPES.PUBLISHED_REVIEWS)
+            ? (
+              <div>
+                <Alert style={{ marginTop: '20px' }} variant="info">
+                  <span>Deploy: </span>
+                  <Alert.Link target="_blank" href={checkFormData.deployUrl}>
+                    {checkFormData.deployUrl}
+                  </Alert.Link>
+                </Alert>
+                <Alert style={{ marginTop: '20px' }} variant="info">
+                  <span>Pull request: </span>
+                  <Alert.Link target="_blank" href={checkFormData.prUrl}>
+                    {checkFormData.prUrl}
+                  </Alert.Link>
+                </Alert>
+              </div>
+            )
             : null
-        }
-        {
-          type !== REQUESTS_TABLE_TYPES.PUBLISHED_REVIEWS
-            ? (<Button variant="primary" onClick={action.bind(null, ACTIONS.SEND)}>
-              Отправить результат
-            </Button>)
-            : null
-        }
-      </Modal.Footer>
-    </Modal>
+          }
+          {checkForm}
+        </Modal.Body>
+        <Modal.Footer>
+          {
+            type === REQUESTS_TABLE_TYPES.DRAFTED_REQUESTS
+              ? (<Button variant="secondary" onClick={action.bind(null, { actionType: ACTIONS.SAVE })}>
+                Сохранить
+              </Button>)
+              : null
+          }
+          {
+            type === REQUESTS_TABLE_TYPES.DRAFTED_REQUESTS
+              ? (<Button variant="primary" onClick={() => {
+                setCheckForm(null);
+                showRequestFrom(true);
+              }}>
+                  Создать запрос
+              </Button>)
+              : (<Button variant="primary" onClick={action.bind(null, { actionType: ACTIONS.SEND })}>
+                Отправить результат
+              </Button>)
+          }
+        </Modal.Footer>
+      </Modal>
+      {sendModal}
+    </>
   );
 };
 

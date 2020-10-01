@@ -1,4 +1,4 @@
-export const SERVER_URL = 'http://x-check.herokuapp.com';
+export const SERVER_URL = 'https://x-check.herokuapp.com';
 
 export const REQUESTS_TABLE_TYPES = {
   PUBLISHED_REVIEWS: 'REVIEWS',
@@ -9,4 +9,9 @@ export const REQUESTS_TABLE_TYPES = {
 export const STATES = {
   DRAFT: 'DRAFT',
   PUBLISHED: 'PUBLISHED',
+};
+
+export const ACTIONS = {
+  SAVE: 'SAVE',
+  SEND: 'SEND',
 };

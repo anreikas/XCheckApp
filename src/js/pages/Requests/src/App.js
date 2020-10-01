@@ -4,38 +4,20 @@ import 'antd/dist/antd.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Button } from 'react-bootstrap';
 import Table from './table';
-import TaskCheck from './task-check';
-import { getTasks, getTaskById, createRequest, sendRequest } from './actions';
+import TaskCheck from './task-check/index';
+import { getTasks, createRequest } from './actions';
 import { REQUESTS_TABLE_TYPES, STATES } from '../../../constants';
 
-const AUTHOR = 'rgovin';
-
-// const TABLE_TYPES = {
-//   PUBLISHED_REVIEWS: 'REVIEWS',
-//   SAVED_REQUESTS: 'SAVED_REQUESTS',
-// };
-
-export default function App() {
-  const [task, setTask] = useState(null);
+export default function App({ user: { nickname } }) {
+  const AUTHOR = nickname;
   const [tasks, setTasks] = useState([]);
-  const [taskCheckType, setTaskCheckType] = useState(REQUESTS_TABLE_TYPES.PUBLISHED_REQUESTS);
-  const [show, setShow] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState('');
-  const [showTable, setShowTable] = useState(true);
   const [taskCheck, setTaskCheck] = useState(null);
   const [updateDrafted, setUpdateDrafted] = useState(false);
   const [updatePublished, setUpdatePublished] = useState(false);
   const handleClose = () => {
     setTaskCheck(null);
   };
-
-  const saveRequest = useCallback(async (request, checkFormData) => {
-
-  });
-
-  const sendRequest = useCallback((checkFormData) => {
-
-  });
 
   const optionChange = useCallback(({ target: { value } }) => {
     setSelectedTaskId(value === '--выберите Task--' ? '' : value);
@@ -46,50 +28,28 @@ export default function App() {
       <TaskCheck
         show={true}
         type={type}
-        save={saveRequest}
-        send={sendRequest}
         handleClose={handleClose}
+        author={AUTHOR}
         request={request}
-        onSend={({ state }) => {
+        onSend={() => {
           setUpdateDrafted(true);
           setUpdatePublished(true);
         }}
       />,
     );
-  }, []);
+  }, [AUTHOR]);
 
-  const handleShow = useCallback( async (e) => {
+  const handleShow = useCallback(async (e) => {
     e.preventDefault();
     const newRequest = await createRequest(selectedTaskId, AUTHOR, STATES.DRAFT);
 
     showTaskCheck(REQUESTS_TABLE_TYPES.DRAFTED_REQUESTS, newRequest);
-  }, [selectedTaskId]);
+  }, [selectedTaskId, AUTHOR, showTaskCheck]);
 
   const onUpdate = useCallback(() => {
     setUpdateDrafted(false);
     setUpdatePublished(false);
-  });
-
-  const onRowClick = useCallback((type, record) => {
-    const { task: taskId } = record;
-
-    // getTaskById(taskId, (gTask) => {
-    //   setTask(gTask);
-    //   setShow(true);
-    // });
-    /*
-    <div className="container">
-      {task
-        ? <Button variant="primary mt-1" onClick={handleShow}>Проверить {task.id}</Button>
-        : null}
-    </div>
-*/
-    getTaskById(taskId, showTaskCheck.bind(null, type));
-  });
-
-  const tableDisplay = {
-    display: showTable ? 'block' : 'none',
-  };
+  }, []);
 
   useEffect(() => {
     getTasks(setTasks);
@@ -119,7 +79,7 @@ export default function App() {
     <div className="container">
       {taskCheck}
     </div>
-    <div className="container mt-5" style={tableDisplay}>
+    <div className="container mt-5">
       <Table
         title={() => <div className="table-title"><span>My saved requests</span></div>}
         filter={{ author: AUTHOR, state: STATES.DRAFT }}
@@ -128,7 +88,7 @@ export default function App() {
         onUpdate={onUpdate}
       />
     </div>
-    <div className="container mt-5" style={tableDisplay}>
+    <div className="container mt-5">
       <Table
         title={() => <div className="table-title"><span>Published requests</span></div>}
         onClick={showTaskCheck.bind(null, REQUESTS_TABLE_TYPES.PUBLISHED_REQUESTS)}

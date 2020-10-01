@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { tasksAPI } from '../../utils';
 
 const initialState = {
-  tasks: null
+  tasks: null,
 };
 
 const TasksSlice = createSlice({
@@ -11,8 +11,8 @@ const TasksSlice = createSlice({
   initialState,
   reducers: {
     updateTasks(state, action) {
-      state.tasks = action.payload.tasks
-    }
+      state.tasks = action.payload.tasks;
+    },
   },
 });
 
@@ -22,6 +22,6 @@ export const { updateTasks } = TasksSlice.actions;
 
 export const getTasks = () => async (dispatch) => {
   const tasks = await tasksAPI.getTasks()
-  .then(tasksData=> tasksData.filter(task => task.state === 'PUBLISHED'));
-  dispatch(updateTasks({tasks}));
-}
+    .then((tasksData) => tasksData.filter((task) => task.state === 'PUBLISHED'));
+  dispatch(updateTasks({ tasks }));
+};
